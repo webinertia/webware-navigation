@@ -1,0 +1,75 @@
+{
+    "name": "webware/webware-navigation",
+    "description": "ACL-aware navigation middleware, container, and Laminas view helper for webware-* packages",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "webware",
+        "navigation",
+        "mezzio",
+        "acl"
+    ],
+    "authors": [
+        {
+            "name": "Joey Smith",
+            "email": "jsmith@webinertia.net",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "~8.4.1 || ~8.5.0",
+        "laminas/laminas-view": "^3.0",
+        "mezzio/mezzio-router": "^3.15",
+        "psr/container": "^2.0",
+        "psr/http-message": "^2.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0"
+    },
+    "require-dev": {
+        "infection/infection": "^0.34.1",
+        "laminas/laminas-permissions-acl": "^2.16",
+        "phpbench/phpbench": "^1.7",
+        "phpunit/phpunit": "^13.3.0",
+        "roave/backward-compatibility-check": "^8.21.0",
+        "roave/security-advisories": "dev-master",
+        "webware/webware-tools": "^0.1.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webware\\Navigation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WebwareTest\\Navigation\\": "test/unit/",
+            "WebwareTestIntegration\\Navigation\\": "test/integration/"
+        }
+    },
+    "extra": {
+        "laminas": {
+            "config-provider": "Webware\\Navigation\\ConfigProvider"
+        }
+    },
+    "scripts": {
+        "test-all": [
+            "@test",
+            "@test-integration"
+        ],
+        "test": "phpunit --no-coverage --colors=always --testsuite \"unit test\"",
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml --coverage-html coverage/html --coverage-text",
+        "test-integration": "phpunit --no-coverage --colors=always --testsuite \"integration test\"",
+        "mutation-test": "infection"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.4.99"
+        },
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "infection/extension-installer": true,
+            "laminas/laminas-component-installer": true
+        }
+    }
+}

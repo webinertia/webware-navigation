@@ -1,0 +1,33 @@
+name: "Continuous Integration"
+
+# Branch protection blocks direct pushes to release branches, and pull_request
+# already re-triggers on every commit pushed to a PR branch (synchronize), so
+# there's no push:branches trigger here — only PRs (targeting numbered
+# release branches) and pushed version tags.
+on:
+  pull_request:
+    branches:
+      - "[0-9]+.[0-9]+.x"
+  push:
+    branches:
+      - "[0-9]+.[0-9]+.x"
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  qa:
+    uses: webinertia/webware-tools/.github/workflows/continuous-integration.yml@0.1.x
+    # CODECOV_TOKEN (org-wide) and INFECTION_DASHBOARD_API_KEY (per-repo) both
+    # come through here, whichever scope actually defines each one.
+    secrets: inherit
+    with:
+      php-versions: '["8.4", "8.5"]'
+      # Navigation integration tests run in-process (no external services).
+      run-integration: true
+      enable-codecov: true
+      enable-infection: true
+      # Canonical leg for coverage + mutation testing (highest supported PHP).
+      coverage-php-version: "8.5"
+      # Start at webware-log's values; raise as the test suite matures.
+      min-msi: "95"
+      min-covered-msi: "95"

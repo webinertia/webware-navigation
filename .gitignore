@@ -1,0 +1,13 @@
+/.phpunit.cache
+/phpbench.json
+/clover.xml
+/coverage/
+/coverage.txt
+/phpunit.xml
+/infection.json5
+/infection.log
+/summary.log
+/vendor/
+/.vscode
+/mago-results.txt
+*:Zone.Identifier

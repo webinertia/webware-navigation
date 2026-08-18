@@ -41,7 +41,7 @@ final class ConfigProviderTest extends TestCase
                 ],
             ],
             'view_helpers' => [
-                'aliases' => [
+                'aliases'   => [
                     'navigation' => Navigation::class,
                 ],
                 'factories' => [

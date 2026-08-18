@@ -20,7 +20,7 @@ final class NavigationFactory
     {
         return new Navigation(
             routeCollector: $container->get(RouteCollectorInterface::class),
-            acl: $container->get(AclInterface::class),
+            acl           : $container->get(AclInterface::class),
             // Future: resolve from RendererPluginManager
             // menuRenderer:     $container->get(RendererPluginManager::class)->get(MenuRenderer::class),
             // breadcrumbRenderer: ...

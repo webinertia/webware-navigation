@@ -43,10 +43,19 @@ final class NavigationContainer implements IteratorAggregate
         private readonly ?RendererInterface $sitemapRenderer = null,
     ) {}
 
-    #[Override]
-    public function getIterator(): Traversable
+    /** @param array<string, mixed> $options */
+    public function breadcrumbs(array $options = []): string
     {
-        return new ArrayIterator($this->topLevel);
+        if (null !== $this->breadcrumbRenderer) {
+            return $this->breadcrumbRenderer->render($this, $options);
+        }
+
+        return $this->renderBreadcrumbsInline();
+    }
+
+    public function getActiveRouteName(): ?string
+    {
+        return $this->activeRouteName;
     }
 
     /** @return list<NavigationItem> */
@@ -55,9 +64,10 @@ final class NavigationContainer implements IteratorAggregate
         return $this->topLevel;
     }
 
-    public function getActiveRouteName(): ?string
+    #[Override]
+    public function getIterator(): Traversable
     {
-        return $this->activeRouteName;
+        return new ArrayIterator($this->topLevel);
     }
 
     public function isActive(NavigationItem $item): bool
@@ -94,16 +104,6 @@ final class NavigationContainer implements IteratorAggregate
     }
 
     /** @param array<string, mixed> $options */
-    public function breadcrumbs(array $options = []): string
-    {
-        if (null !== $this->breadcrumbRenderer) {
-            return $this->breadcrumbRenderer->render($this, $options);
-        }
-
-        return $this->renderBreadcrumbsInline();
-    }
-
-    /** @param array<string, mixed> $options */
     public function sitemap(array $options = []): string
     {
         if (null !== $this->sitemapRenderer) {
@@ -113,52 +113,29 @@ final class NavigationContainer implements IteratorAggregate
         return $this->renderSitemapInline();
     }
 
-    // -------------------------------------------------------------------------
-    // Inline fallback renderers
-    // -------------------------------------------------------------------------
-
-    /** @param array<string, mixed> $options */
-    private function renderMenuInline(array $options): string
+    private function e(string $value): string
     {
-        $type = (string) ($options['type'] ?? 'sidebar');
-        $ulClass = 'horizontal' === $type ? 'navbar-nav' : 'nav flex-column gap-1';
-
-        $html = sprintf('<ul class="%s">', $this->e($ulClass));
-
-        foreach ($this->topLevel as $item) {
-            $html .= $this->renderMenuItemInline($item);
-        }
-
-        return "{$html}</ul>";
+        return htmlspecialchars($value, ENT_QUOTES, encoding: 'UTF-8');
     }
 
-    private function renderMenuItemInline(NavigationItem $item): string
+    /** @return list<NavigationItem>|null */
+    private function findTrail(NavigationItem $item): ?array
     {
-        $isActive = $this->isActive($item);
-        $active = $isActive ? ' active' : '';
-        $icon = '' === $item->icon ? '' : sprintf('<i class="bi %s me-2"></i>', $this->e($item->icon));
-        $path = $item->route->getPath();
-        $label = $this->e($item->label);
+        $routeName = $item->route->getName();
 
-        $html = sprintf(
-            '<li class="nav-item"><a class="nav-link%s" href="%s">%s%s</a>',
-            $active,
-            $this->e($path),
-            $icon,
-            $label,
-        );
-
-        $hasChildren = $item->hasChildren();
-
-        if ($hasChildren) {
-            $html .= '<ul class="nav flex-column ms-3">';
-            foreach ($item->getChildren() as $child) {
-                $html .= $this->renderMenuItemInline($child);
-            }
-            $html .= '</ul>';
+        if ($routeName === $this->activeRouteName) {
+            return [$item];
         }
 
-        return "{$html}</li>";
+        foreach ($item->getChildren() as $child) {
+            $childTrail = $this->findTrail($child);
+
+            if (null !== $childTrail) {
+                return [$item, ...$childTrail];
+            }
+        }
+
+        return null;
     }
 
     private function renderBreadcrumbsInline(): string
@@ -191,42 +168,52 @@ final class NavigationContainer implements IteratorAggregate
         return "{$html}</ol></nav>";
     }
 
-    /**
-     * Walks the tree to find the active item and collect its ancestor chain.
-     *
-     * @return list<NavigationItem>
-     */
-    private function resolveBreadcrumbTrail(): array
-    {
-        foreach ($this->topLevel as $item) {
-            $trail = $this->findTrail($item);
+    // -------------------------------------------------------------------------
+    // Inline fallback renderers
+    // -------------------------------------------------------------------------
 
-            if (null !== $trail) {
-                return $trail;
-            }
+    /** @param array<string, mixed> $options */
+    private function renderMenuInline(array $options): string
+    {
+        $type    = (string) ($options['type'] ?? 'sidebar');
+        $ulClass = 'horizontal' === $type ? 'navbar-nav' : 'nav flex-column gap-1';
+
+        $html = sprintf('<ul class="%s">', $this->e($ulClass));
+
+        foreach ($this->topLevel as $item) {
+            $html .= $this->renderMenuItemInline($item);
         }
 
-        return [];
+        return "{$html}</ul>";
     }
 
-    /** @return list<NavigationItem>|null */
-    private function findTrail(NavigationItem $item): ?array
+    private function renderMenuItemInline(NavigationItem $item): string
     {
-        $routeName = $item->route->getName();
+        $isActive = $this->isActive($item);
+        $active   = $isActive ? ' active' : '';
+        $icon     = '' === $item->icon ? '' : sprintf('<i class="bi %s me-2"></i>', $this->e($item->icon));
+        $path     = $item->route->getPath();
+        $label    = $this->e($item->label);
 
-        if ($routeName === $this->activeRouteName) {
-            return [$item];
-        }
+        $html = sprintf(
+            '<li class="nav-item"><a class="nav-link%s" href="%s">%s%s</a>',
+            $active,
+            $this->e($path),
+            $icon,
+            $label,
+        );
 
-        foreach ($item->getChildren() as $child) {
-            $childTrail = $this->findTrail($child);
+        $hasChildren = $item->hasChildren();
 
-            if (null !== $childTrail) {
-                return [$item, ...$childTrail];
+        if ($hasChildren) {
+            $html .= '<ul class="nav flex-column ms-3">';
+            foreach ($item->getChildren() as $child) {
+                $html .= $this->renderMenuItemInline($child);
             }
+            $html .= '</ul>';
         }
 
-        return null;
+        return "{$html}</li>";
     }
 
     private function renderSitemapInline(): string
@@ -261,8 +248,21 @@ final class NavigationContainer implements IteratorAggregate
         return "{$html}</li>";
     }
 
-    private function e(string $value): string
+    /**
+     * Walks the tree to find the active item and collect its ancestor chain.
+     *
+     * @return list<NavigationItem>
+     */
+    private function resolveBreadcrumbTrail(): array
     {
-        return htmlspecialchars($value, ENT_QUOTES, encoding: 'UTF-8');
+        foreach ($this->topLevel as $item) {
+            $trail = $this->findTrail($item);
+
+            if (null !== $trail) {
+                return $trail;
+            }
+        }
+
+        return [];
     }
 }

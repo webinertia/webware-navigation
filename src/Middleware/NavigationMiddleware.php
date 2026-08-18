@@ -48,7 +48,7 @@ final class NavigationMiddleware implements MiddlewareInterface
         if ($routeResult instanceof RouteResult) {
             $failed = $routeResult->isFailure();
 
-            if (!$failed) {
+            if (! $failed) {
                 $matchedRouteName = $routeResult->getMatchedRouteName();
                 $this->helper->setActiveRouteName(
                     is_string($matchedRouteName) && '' !== $matchedRouteName ? $matchedRouteName : null,

@@ -38,9 +38,9 @@ final class NavigationRenderingTest extends TestCase
     #[Test]
     public function fullTreeRendersAcrossAllOutputs(): void
     {
-        $top = $this->makeItem('Dashboard', '/admin', 'admin.dashboard');
-        $users = $this->makeItem('Users', '/admin/users', 'admin.users');
-        $userEdit = $this->makeItem('Edit', '/admin/users/edit', 'admin.users.edit');
+        $top       = $this->makeItem('Dashboard', '/admin', 'admin.dashboard');
+        $users     = $this->makeItem('Users', '/admin/users', 'admin.users');
+        $userEdit  = $this->makeItem('Edit', '/admin/users/edit', 'admin.users.edit');
         $userRoles = $this->makeItem('Roles', '/admin/users/roles', 'admin.users.roles');
         $users->addChild($userEdit);
         $users->addChild($userRoles);
@@ -48,9 +48,9 @@ final class NavigationRenderingTest extends TestCase
 
         $container = new NavigationContainer([$top], 'admin.users.edit');
 
-        $menu = $container->menu();
+        $menu        = $container->menu();
         $breadcrumbs = $container->breadcrumbs();
-        $sitemap = $container->sitemap();
+        $sitemap     = $container->sitemap();
 
         $this->assertStringContainsString('nav-link active', $menu);
         $this->assertStringContainsString('/admin/users/roles', $menu);

@@ -33,20 +33,6 @@ final class NavigationItemTest extends TestCase
      * @throws \PHPUnit\Exception
      */
     #[Test]
-    public function fallsBackToDefaults(): void
-    {
-        $item = NavigationItem::fromRouteOptions($this->makeRoute('admin.dashboard', []), []);
-
-        $this->assertSame('admin.dashboard', $item->label);
-        $this->assertSame('', $item->icon);
-        $this->assertNull($item->parent);
-        $this->assertSame(0, $item->order);
-    }
-
-    /**
-     * @throws \PHPUnit\Exception
-     */
-    #[Test]
     public function consumesOptionValues(): void
     {
         $item = NavigationItem::fromRouteOptions(
@@ -58,6 +44,20 @@ final class NavigationItemTest extends TestCase
         $this->assertSame('bi-people', $item->icon);
         $this->assertSame('admin', $item->parent);
         $this->assertSame(3, $item->order);
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function fallsBackToDefaults(): void
+    {
+        $item = NavigationItem::fromRouteOptions($this->makeRoute('admin.dashboard', []), []);
+
+        $this->assertSame('admin.dashboard', $item->label);
+        $this->assertSame('', $item->icon);
+        $this->assertNull($item->parent);
+        $this->assertSame(0, $item->order);
     }
 
     /**
@@ -81,7 +81,7 @@ final class NavigationItemTest extends TestCase
     public function managesChildren(): void
     {
         $parent = NavigationItem::fromRouteOptions($this->makeRoute('admin', []), []);
-        $child = NavigationItem::fromRouteOptions($this->makeRoute('admin.users', []), []);
+        $child  = NavigationItem::fromRouteOptions($this->makeRoute('admin.users', []), []);
 
         $this->assertFalse($parent->hasChildren());
 

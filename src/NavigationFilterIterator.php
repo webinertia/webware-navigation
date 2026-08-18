@@ -39,18 +39,6 @@ final class NavigationFilterIterator extends FilterIterator
         parent::__construct(new ArrayIterator($routes));
     }
 
-    #[Override]
-    public function accept(): bool
-    {
-        /** @var Route $route */
-        $route = $this->current();
-        $options = $route->getOptions();
-
-        return (
-            self::belongsToNav($options, $this->navId) && $this->acl->isAllowed($this->user, $route->getName(), null)
-        );
-    }
-
     /** @param array<array-key, mixed> $options */
     private static function belongsToNav(array $options, string $navId): bool
     {
@@ -65,5 +53,17 @@ final class NavigationFilterIterator extends FilterIterator
         }
 
         return false;
+    }
+
+    #[Override]
+    public function accept(): bool
+    {
+        /** @var Route $route */
+        $route   = $this->current();
+        $options = $route->getOptions();
+
+        return (
+            self::belongsToNav($options, $this->navId) && $this->acl->isAllowed($this->user, $route->getName(), null)
+        );
     }
 }

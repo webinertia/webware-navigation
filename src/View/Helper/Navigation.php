@@ -48,6 +48,30 @@ final class Navigation implements StatefulHelperInterface
         private readonly ?RendererInterface $sitemapRenderer = null,
     ) {}
 
+    #[Override]
+    public function resetState(): void
+    {
+        $this->user            = null;
+        $this->activeRouteName = null;
+
+        // acl is intentionally not reset — it is repopulated each request by NavigationMiddleware
+    }
+
+    public function setAcl(AclInterface $acl): void
+    {
+        $this->acl = $acl;
+    }
+
+    public function setActiveRouteName(?string $name): void
+    {
+        $this->activeRouteName = $name;
+    }
+
+    public function setUser(?UserInterface $user): void
+    {
+        $this->user = $user;
+    }
+
     /**
      * Builds and returns an ACL-filtered NavigationContainer for $navId.
      *
@@ -89,29 +113,5 @@ final class Navigation implements StatefulHelperInterface
             $this->breadcrumbRenderer,
             $this->sitemapRenderer,
         );
-    }
-
-    public function setUser(?UserInterface $user): void
-    {
-        $this->user = $user;
-    }
-
-    public function setAcl(AclInterface $acl): void
-    {
-        $this->acl = $acl;
-    }
-
-    public function setActiveRouteName(?string $name): void
-    {
-        $this->activeRouteName = $name;
-    }
-
-    #[Override]
-    public function resetState(): void
-    {
-        $this->user = null;
-        $this->activeRouteName = null;
-
-        // acl is intentionally not reset — it is repopulated each request by NavigationMiddleware
     }
 }

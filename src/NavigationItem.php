@@ -42,13 +42,13 @@ final class NavigationItem
     public static function fromRouteOptions(Route $route, array $options): self
     {
         return new self(
-            route: $route,
-            label: (string) ($options['label'] ?? $route->getName()),
-            icon: (string) ($options['icon'] ?? ''),
+            route : $route,
+            label : (string) ($options['label'] ?? $route->getName()),
+            icon  : (string) ($options['icon'] ?? ''),
             parent: array_key_exists('parent', $options) && is_string($options['parent'])
                 ? $options['parent']
                 : null,
-            order: (int) ($options['order'] ?? 0),
+            order : (int) ($options['order'] ?? 0),
         );
     }
 

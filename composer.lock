@@ -10152,12 +10152,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/webinertia/webware-tools.git",
-                "reference": "9911ac41b01ceeecb17c92318a55b907d10dad97"
+                "reference": "50f0ccc2619d84358ac123800fdac5818c34f4b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webinertia/webware-tools/zipball/9911ac41b01ceeecb17c92318a55b907d10dad97",
-                "reference": "9911ac41b01ceeecb17c92318a55b907d10dad97",
+                "url": "https://api.github.com/repos/webinertia/webware-tools/zipball/50f0ccc2619d84358ac123800fdac5818c34f4b9",
+                "reference": "50f0ccc2619d84358ac123800fdac5818c34f4b9",
                 "shasum": ""
             },
             "require": {
@@ -10194,7 +10194,7 @@
                 "issues": "https://github.com/webinertia/webware-tools/issues",
                 "source": "https://github.com/webinertia/webware-tools/tree/0.1.x"
             },
-            "time": "2026-08-18T12:07:54+00:00"
+            "time": "2026-08-18T21:55:59+00:00"
         }
     ],
     "aliases": [],

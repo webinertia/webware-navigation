@@ -1,5 +1,12 @@
 # webware-navigation
 
+[![PHP Version](https://img.shields.io/packagist/php-v/webware/webware-navigation)](https://packagist.org/packages/webware/webware-navigation)
+[![Latest Version](https://img.shields.io/packagist/v/webware/webware-navigation)](https://packagist.org/packages/webware/webware-navigation)
+[![License](https://img.shields.io/github/license/webinertia/webware-navigation)](LICENSE)
+[![Continuous Integration](https://github.com/webinertia/webware-navigation/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/webinertia/webware-navigation/actions/workflows/continuous-integration.yml)
+[![codecov](https://codecov.io/gh/webinertia/webware-navigation/graph/badge.svg)](https://codecov.io/gh/webinertia/webware-navigation)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fwebinertia%2Fwebware-navigation%2F0.1.x)](https://dashboard.stryker-mutator.io/reports/github.com/webinertia/webware-navigation/0.1.x)
+
 ACL-aware navigation trees for Mezzio, driven by `Route::setOptions()`.
 
 ## Documentation

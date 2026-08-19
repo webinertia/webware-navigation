@@ -331,3 +331,91 @@ Baseline candidates (pending explicit user approval per issue): the 3 lint
 complexity errors, the 24 dep-driven analyze errors, the 1
 `possibly-invalid-argument`, and the 4 `mixed-assignment` warnings. Nothing has
 been baselined yet.
+
+## Research: mezzio/laminas interface swap + class_alias (2026-08-18)
+
+Direction change under review: instead of keeping the `Webware\Acl\*` /
+`Webware\UserManager\*` coupling (Option 3), type this package against the
+underlying laminas/mezzio interfaces with dev dependencies here, then
+`class_alias` in the IMS app. Verified feasibility below. **Implementation
+deferred — evening session.**
+
+### Package reality
+
+- `mezzio/mezzio-permissions-acl` **does not exist** (Packagist 404). The
+  actual targets are:
+  - `laminas/laminas-permissions-acl` — `Laminas\Permissions\Acl\AclInterface`
+    (`hasResource()`, `isAllowed($role = null, $resource = null, $privilege =
+    null)`), `Role\RoleInterface::getRoleId()`,
+    `ProprietaryInterface::getOwnerId()`.
+  - `mezzio/mezzio-authentication` (stable 1.13.0) —
+    `Mezzio\Authentication\UserInterface`: `getIdentity(): string`,
+    `getRoles(): iterable`, `getDetail(string $name, $default = null)`,
+    `getDetails(): array`.
+- Plain Laminas `Acl::isAllowed` on an unregistered resource **throws**
+  `InvalidArgumentException("Resource ... not found")`; the webware override
+  returns `false` (fail-closed). Behavioral divergence lives in the
+  implementation, not the interface.
+
+### Call-site audit — zero API violations
+
+- `NavigationFilterIterator::accept()`:
+  `$acl->isAllowed($user, $route->getName(), null)` — exact
+  `AclInterface::isAllowed` signature match; string resource IDs supported.
+- `Route::getName(): string`, `getPath(): string`, `getOptions(): array` —
+  all used within contract.
+- `RouteResult::getMatchedRouteName(): false|string` — middleware already
+  narrows via `is_string()` after `isFailure()`.
+- Navigation **never calls any user method** — user is an opaque role carrier,
+  request-attribute key, and `instanceof` marker only.
+
+### Interface parity (webware UserInterface vs mezzio)
+
+| Method | webware | mezzio | compatible |
+|---|---|---|---|
+| `getIdentity` | `?string` | `string` | no |
+| `getRoles` | `?array` | `iterable` | no |
+| `getDetails` | `?array` | `array` | no |
+| `getDetail` | `mixed $default`, `: mixed` | untyped | yes |
+
+Parity is **not exact** (three return-type mismatches). Irrelevant for
+navigation today — it invokes none of them — and PHP does not re-validate
+signatures at `class_alias` time, so the alias works as a pure type marker.
+Risk only if future code calls mezzio-contract methods on the aliased object.
+
+### class_alias plan — verified possible, app-side requirements
+
+Alias registered early in app bootstrap:
+
+```php
+class_alias(\Webware\UserManager\UserInterface::class, \Mezzio\Authentication\UserInterface::class);
+```
+
+Requirements:
+
+1. App must **not** install the real `mezzio/mezzio-authentication` (name
+   collision → fatal).
+2. Alias must run before the first navigation type check.
+3. `::class` constants do not follow aliases — attribute keys break:
+   `IdentityMiddleware` sets `Webware\UserManager\UserInterface::class` while
+   navigation reads `Mezzio\Authentication\UserInterface::class` → one-line app
+   change (or middleware reads both keys). Same for the `AclMiddleware`
+   attribute key.
+4. `NavigationFactory` fetches `Laminas\Permissions\Acl\AclInterface::class`
+   from the container → app needs one service alias line (aliases do not affect
+   `::class` strings).
+
+ACL side needs **no alias**: `Webware\Acl\Acl extends
+Laminas\Permissions\Acl\Acl` and already satisfies the Laminas
+`AclInterface`. Fail-closed, multi-role, and DB-rule loading all live in that
+instance's `isAllowed` override and remain intact.
+
+### Repo shape when implemented
+
+- `require`: `laminas/laminas-permissions-acl` (runtime type hints; app
+  already installs it).
+- `require-dev`: `mezzio/mezzio-authentication: ^1.13` (type checking only).
+- Type-hint swaps in 4 files (`NavigationFilterIterator`,
+  `View\Helper\Navigation`, `NavigationMiddleware`, `NavigationFactory`);
+  all `Webware\Acl\*` / `Webware\UserManager\*` imports leave `src/`.
+- VCS consumption unchanged; the alias lives app-side only.

@@ -22,7 +22,8 @@
         "psr/container": "^2.0",
         "psr/http-message": "^2.0",
         "psr/http-server-handler": "^1.0",
-        "psr/http-server-middleware": "^1.0"
+        "psr/http-server-middleware": "^1.0",
+        "webware/webware-core": "^1.0.0-alpha.6"
     },
     "require-dev": {
         "infection/infection": "^0.34.1",
@@ -31,7 +32,7 @@
         "phpunit/phpunit": "^13.3.0",
         "roave/backward-compatibility-check": "^8.21.0",
         "roave/security-advisories": "dev-master",
-        "webware/webware-tools": "^0.1.x-dev"
+        "webware/webware-tools": "^1.0.0-beta.2"
     },
     "autoload": {
         "psr-4": {

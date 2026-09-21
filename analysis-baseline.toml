@@ -1,2 +1,7 @@
 variant = "loose"
-issues = []
+
+[[issues]]
+file = "src/NavigationFilterIterator.php"
+code = "possibly-invalid-argument"
+message = '''Possible argument type mismatch for argument #1 of `IteratorIterator::__construct`: expected `('TIterator.filteriterator extends Traversable<('K.filteriterator extends mixed), ('V.filteriterator extends mixed)>)`, but possibly received `ArrayIterator<int, Mezzio\Router\Route>`.'''
+count = 1

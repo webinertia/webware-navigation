@@ -92,6 +92,25 @@ final class NavigationContainerTest extends TestCase
      * @throws \PHPUnit\Exception
      */
     #[Test]
+    public function breadcrumbsRenderTheTrailWithOnlyTheLastItemActive(): void
+    {
+        $parent = $this->makeItem('Users', '/admin/users', 'admin.users');
+        $child  = $this->makeItem('Edit', '/admin/users/edit', 'admin.users.edit');
+        $parent->addChild($child);
+
+        $this->assertSame(
+            '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
+                . '<li class="breadcrumb-item"><a href="/admin/users">Users</a></li>'
+                . '<li class="breadcrumb-item active" aria-current="page">Edit</li>'
+                . '</ol></nav>',
+            new NavigationContainer([$parent], 'admin.users.edit')->breadcrumbs(),
+        );
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
     public function breadcrumbsReturnTrail(): void
     {
         $parent = $this->makeItem('Users', '/admin/users', 'admin.users');
@@ -117,6 +136,20 @@ final class NavigationContainerTest extends TestCase
 
         $this->assertSame($items, $container->getItems());
         $this->assertSame($items, iterator_to_array($container->getIterator()));
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function labelsAndPathsAreEscaped(): void
+    {
+        $item = $this->makeItem('Tom\'s & "Jerry"', '/admin', 'admin.escaped');
+
+        $this->assertSame(
+            '<ul class="ims-sitemap"><li><a href="/admin">Tom&#039;s &amp; &quot;Jerry&quot;</a></li></ul>',
+            new NavigationContainer([$item], null)->sitemap(),
+        );
     }
 
     /**
@@ -153,6 +186,23 @@ final class NavigationContainerTest extends TestCase
      * @throws \PHPUnit\Exception
      */
     #[Test]
+    public function menuMarksOnlyTheActiveItemAsActive(): void
+    {
+        $container = new NavigationContainer(
+            [$this->makeItem('Dashboard', '/admin', 'admin.dashboard')],
+            'admin.dashboard',
+        );
+
+        $this->assertSame(
+            '<ul class="nav flex-column gap-1"><li class="nav-item"><a class="nav-link active" href="/admin">Dashboard</a></li></ul>',
+            $container->menu(),
+        );
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
     public function menuRendersChildNesting(): void
     {
         $parent = $this->makeItem('Users', '/admin/users', 'admin.users');
@@ -163,6 +213,113 @@ final class NavigationContainerTest extends TestCase
 
         $this->assertStringContainsString('<ul class="nav flex-column ms-3">', $html);
         $this->assertStringContainsString('/admin/users/edit', $html);
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function menuRendersEveryTopLevelItem(): void
+    {
+        $container = new NavigationContainer([
+            $this->makeItem('Dashboard', '/admin', 'admin.dashboard'),
+            $this->makeItem('Reports', '/admin/reports', 'admin.reports'),
+        ], null);
+
+        $this->assertSame(
+            '<ul class="nav flex-column gap-1">'
+                . '<li class="nav-item"><a class="nav-link" href="/admin">Dashboard</a></li>'
+                . '<li class="nav-item"><a class="nav-link" href="/admin/reports">Reports</a></li>'
+                . '</ul>',
+            $container->menu(),
+        );
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function menuRendersExactMarkupForNestedChildren(): void
+    {
+        $parent = $this->makeItem('Users', '/admin/users', 'admin.users');
+        $child  = $this->makeItem('Edit', '/admin/users/edit', 'admin.users.edit');
+        $parent->addChild($child);
+
+        $this->assertSame(
+            '<ul class="nav flex-column gap-1">'
+                . '<li class="nav-item"><a class="nav-link" href="/admin/users">Users</a>'
+                . '<ul class="nav flex-column ms-3">'
+                . '<li class="nav-item"><a class="nav-link" href="/admin/users/edit">Edit</a></li>'
+                . '</ul></li></ul>',
+            new NavigationContainer([$parent], null)->menu(),
+        );
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function menuRendersExactMarkupForTheDefaultSidebarType(): void
+    {
+        $container = new NavigationContainer([$this->makeItem('Dashboard', '/admin', 'admin.dashboard')], null);
+
+        $this->assertSame(
+            '<ul class="nav flex-column gap-1"><li class="nav-item"><a class="nav-link" href="/admin">Dashboard</a></li></ul>',
+            $container->menu(),
+        );
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function menuRendersExactMarkupForTheHorizontalType(): void
+    {
+        $container = new NavigationContainer([$this->makeItem('Dashboard', '/admin', 'admin.dashboard')], null);
+
+        $this->assertSame(
+            '<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="/admin">Dashboard</a></li></ul>',
+            $container->menu(['type' => 'horizontal']),
+        );
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function menuRendersTheIconWhenPresentAndOmitsItWhenEmpty(): void
+    {
+        $withIcon    = new NavigationContainer([$this->makeItem('Grid', '/admin', 'admin.grid', 'bi-grid-fill')], null);
+        $withoutIcon = new NavigationContainer([$this->makeItem('Plain', '/admin', 'admin.plain')], null);
+
+        $this->assertSame(
+            '<ul class="nav flex-column gap-1"><li class="nav-item"><a class="nav-link" href="/admin">'
+                . '<i class="bi bi-grid-fill me-2"></i>Grid</a></li></ul>',
+            $withIcon->menu(),
+        );
+        $this->assertSame(
+            '<ul class="nav flex-column gap-1"><li class="nav-item"><a class="nav-link" href="/admin">Plain</a></li></ul>',
+            $withoutIcon->menu(),
+        );
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function sitemapRendersExactMarkupForNestedChildren(): void
+    {
+        $parent = $this->makeItem('Users', '/admin/users', 'admin.users');
+        $child  = $this->makeItem('Edit', '/admin/users/edit', 'admin.users.edit');
+        $parent->addChild($child);
+
+        $this->assertSame(
+            '<ul class="ims-sitemap">'
+                . '<li><a href="/admin/users">Users</a>'
+                . '<ul><li><a href="/admin/users/edit">Edit</a></li></ul>'
+                . '</li></ul>',
+            new NavigationContainer([$parent], null)->sitemap(),
+        );
     }
 
     /**
@@ -186,10 +343,10 @@ final class NavigationContainerTest extends TestCase
      *
      * @throws \PHPUnit\Exception
      */
-    private function makeItem(string $label, string $path, string $routeName): NavigationItem
+    private function makeItem(string $label, string $path, string $routeName, string $icon = ''): NavigationItem
     {
         $route = new Route($path, $this->createStub(MiddlewareInterface::class), ['GET'], $routeName);
-        $route->setOptions(['label' => $label]);
+        $route->setOptions(['label' => $label, 'icon' => $icon]);
 
         return NavigationItem::fromRouteOptions($route, $route->getOptions());
     }

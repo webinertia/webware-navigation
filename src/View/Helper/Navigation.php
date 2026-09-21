@@ -7,12 +7,12 @@ namespace Webware\Navigation\View\Helper;
 use Laminas\View\Helper\StatefulHelperInterface;
 use Mezzio\Router\RouteCollectorInterface;
 use Override;
-use Webware\Acl\AclInterface;
+use Webware\Core\AclInterface;
+use Webware\Core\UserInterface;
 use Webware\Navigation\NavigationContainer;
 use Webware\Navigation\NavigationFilterIterator;
 use Webware\Navigation\NavigationItem;
 use Webware\Navigation\Renderer\RendererInterface;
-use Webware\UserManager\UserInterface;
 
 use function array_key_exists;
 use function usort;
@@ -79,10 +79,13 @@ final class Navigation implements StatefulHelperInterface
      */
     public function __invoke(string $navId): NavigationContainer
     {
+        /** @var UserInterface $user the identity middleware always resolves a guest user */
+        $user = $this->user;
+
         $iterator = new NavigationFilterIterator(
             $this->routeCollector->getRoutes(),
             $navId,
-            $this->user,
+            $user,
             $this->acl,
         );
 

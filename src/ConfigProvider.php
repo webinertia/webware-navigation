@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Webware\Navigation;
 
-use Webware\Navigation\Container\NavigationMiddlewareFactory;
-use Webware\Navigation\Middleware\NavigationMiddleware;
+use Webware\Navigation\Http\Middleware\Container\NavigationMiddlewareFactory;
+use Webware\Navigation\Http\Middleware\NavigationMiddleware;
 use Webware\Navigation\View\Helper\Navigation as NavigationHelper;
 use Webware\Navigation\View\Helper\NavigationFactory;
 

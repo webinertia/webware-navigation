@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Webware\Navigation\Container;
+namespace Webware\Navigation\Http\Middleware\Container;
 
 use Laminas\View\HelperPluginManager;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Webware\Navigation\Middleware\NavigationMiddleware;
+use Webware\Navigation\Http\Middleware\NavigationMiddleware;
 use Webware\Navigation\View\Helper\Navigation;
 
 final class NavigationMiddlewareFactory

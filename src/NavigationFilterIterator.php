@@ -8,9 +8,8 @@ use ArrayIterator;
 use FilterIterator;
 use Mezzio\Router\Route;
 use Override;
-use Webware\Acl\Acl;
-use Webware\Acl\AclInterface;
-use Webware\UserManager\UserInterface;
+use Webware\Core\AclInterface;
+use Webware\Core\UserInterface;
 
 use function in_array;
 use function is_array;
@@ -33,8 +32,8 @@ final class NavigationFilterIterator extends FilterIterator
     public function __construct(
         array $routes,
         private readonly string $navId,
-        private readonly ?UserInterface $user,
-        private readonly AclInterface&Acl $acl,
+        private readonly UserInterface $user,
+        private readonly AclInterface $acl,
     ) {
         parent::__construct(new ArrayIterator($routes));
     }
@@ -42,6 +41,7 @@ final class NavigationFilterIterator extends FilterIterator
     /** @param array<array-key, mixed> $options */
     private static function belongsToNav(array $options, string $navId): bool
     {
+        /** @var mixed $nav */
         $nav = $options['navigation'] ?? null;
 
         if (is_string($nav)) {
@@ -59,11 +59,16 @@ final class NavigationFilterIterator extends FilterIterator
     public function accept(): bool
     {
         /** @var Route $route */
-        $route   = $this->current();
+        $route = $this->current();
+
         $options = $route->getOptions();
 
         return (
-            self::belongsToNav($options, $this->navId) && $this->acl->isAllowed($this->user, $route->getName(), null)
+            self::belongsToNav($options, $this->navId)
+                && $this->acl->isAllowed(
+                    role    : $this->user,
+                    resource: $route->getName(),
+                )
         );
     }
 }

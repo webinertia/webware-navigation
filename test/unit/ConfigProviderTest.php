@@ -19,8 +19,8 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Webware\Navigation\ConfigProvider;
-use Webware\Navigation\Container\NavigationMiddlewareFactory;
-use Webware\Navigation\Middleware\NavigationMiddleware;
+use Webware\Navigation\Http\Middleware\Container\NavigationMiddlewareFactory;
+use Webware\Navigation\Http\Middleware\NavigationMiddleware;
 use Webware\Navigation\View\Helper\Navigation;
 use Webware\Navigation\View\Helper\NavigationFactory;
 

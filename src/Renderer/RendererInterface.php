@@ -13,6 +13,8 @@ use Webware\Navigation\NavigationContainer;
  * their FQCN or alias. Register custom renderers via `view_helper_config` /
  * service-manager config in ConfigProvider.
  *
+ * @api
+ *
  * @see NavigationContainer::menu()
  * @see NavigationContainer::breadcrumbs()
  * @see NavigationContainer::sitemap()

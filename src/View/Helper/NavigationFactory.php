@@ -8,7 +8,7 @@ use Mezzio\Router\RouteCollectorInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Webware\Acl\AclInterface;
+use Webware\Core\AclInterface;
 
 final class NavigationFactory
 {

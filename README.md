@@ -48,8 +48,24 @@ Add to `config/config.php`:
 Webware\Navigation\ConfigProvider::class,
 ```
 
-The middleware is self-registering via `ConfigProvider`. No manual pipeline edit
-is required beyond the entry in `config/config.php`.
+That registers the middleware factory and the `navigation` view helper. The
+middleware itself is **not** piped for you: add it to `config/pipeline.php`
+after `RouteMiddleware` and before `DispatchMiddleware`, so that `RouteResult`
+is on the request by the time it runs:
+
+```php
+$app->pipe(RouteMiddleware::class);
+// ...
+$app->pipe(UrlHelperMiddleware::class);
+$app->pipe(NavigationMiddleware::class);
+$app->pipe(DispatchMiddleware::class);
+```
+
+The package deliberately does not self-register through Mezzio's
+`middleware_pipeline` config. That mechanism orders middleware by an integer
+priority, and this middleware's correctness depends on running after
+`RouteMiddleware` and before `DispatchMiddleware`, an ordering such a priority
+cannot express safely. See [Architecture](docs/architecture.md), Decision 7.
 
 ## Namespace
 

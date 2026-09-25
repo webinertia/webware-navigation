@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e0bd9e3d16432eab7f847c8cad1d458",
+    "content-hash": "9c85ea9380d91b7a851cf364cbdfda86",
     "packages": [
         {
             "name": "brick/varexporter",
@@ -826,16 +826,16 @@
         },
         {
             "name": "mezzio/mezzio-router",
-            "version": "3.20.0",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mezzio/mezzio-router.git",
-                "reference": "be4de58dc8822b4af653dc554f963b4cb1e23355"
+                "reference": "e7a6505d7e460ce30c4135e146241d7d24d81c27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mezzio/mezzio-router/zipball/be4de58dc8822b4af653dc554f963b4cb1e23355",
-                "reference": "be4de58dc8822b4af653dc554f963b4cb1e23355",
+                "url": "https://api.github.com/repos/mezzio/mezzio-router/zipball/e7a6505d7e460ce30c4135e146241d7d24d81c27",
+                "reference": "e7a6505d7e460ce30c4135e146241d7d24d81c27",
                 "shasum": ""
             },
             "require": {
@@ -845,7 +845,7 @@
                 "psr/http-factory": "^1.0.2",
                 "psr/http-message": "^1.0.1 || ^2.0.0",
                 "psr/http-server-middleware": "^1.0.2",
-                "webmozart/assert": "^1.11 || ^2.0"
+                "webmozart/assert": "^1.11.0 || ^2.1.1"
             },
             "conflict": {
                 "mezzio/mezzio": "<3.5",
@@ -857,11 +857,10 @@
                 "laminas/laminas-servicemanager": "^4.4.0",
                 "laminas/laminas-stratigility": "^4.2.0",
                 "phpunit/phpunit": "^11.5.42",
-                "psalm/plugin-phpunit": "^0.19.0",
+                "psalm/plugin-phpunit": "^0.19.5",
                 "vimeo/psalm": "^6.13.1"
             },
             "suggest": {
-                "mezzio/mezzio-aurarouter": "^3.0 to use the Aura.Router routing adapter",
                 "mezzio/mezzio-fastroute": "^3.0 to use the FastRoute routing adapter",
                 "mezzio/mezzio-laminasrouter": "^3.0 to use the laminas-router routing adapter"
             },
@@ -904,7 +903,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2026-02-19T15:49:48+00:00"
+            "time": "2026-01-09T11:44:24+00:00"
         },
         {
             "name": "nikic/php-parser",

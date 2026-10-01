@@ -12,7 +12,7 @@ use Webware\Navigation\View\Helper\NavigationFactory;
 final class ConfigProvider
 {
     /** @return array<string, mixed> */
-    private function getDependencies(): array
+    public function getDependencies(): array
     {
         return [
             'factories' => [

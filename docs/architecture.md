@@ -138,9 +138,9 @@ NavigationContainer::menu()
     → else: inline Bootstrap markup
 ```
 
-The renderers are constructor parameters on `NavigationContainer`, injected by
-`Navigation` helper which receives them from `NavigationFactory`. The factory currently
-passes `null` for all three with a comment marking the future injection point.
+The renderers are constructor parameters on `NavigationContainer`, injected by the
+`Navigation` helper, which receives them from `NavigationFactory`. The factory passes
+`null` for all three, so the inline fallbacks run.
 
 **Why plan for renderers now rather than deferring entirely:**
 - The constructor signature is the public API surface. Adding renderer parameters
@@ -148,32 +148,20 @@ passes `null` for all three with a comment marking the future injection point.
 - The `null` default means zero cost until renderers exist.
 - The `RendererInterface` contract is documented so implementors know what to build.
 
-**Planned renderer injection via PluginManager:**
-```php
-// Future NavigationFactory
-$renderers = $container->get(RendererPluginManager::class);
-return new Navigation(
-    routeCollector:      $container->get(RouteCollectorInterface::class),
-    acl:                 $container->get(AclInterface::class),
-    menuRenderer:        $renderers->get(MenuRenderer::class),
-    breadcrumbRenderer:  $renderers->get(BreadcrumbRenderer::class),
-    sitemapRenderer:     $renderers->get(SitemapRenderer::class),
-);
-```
-
-Custom renderers will be registered via service-manager config, allowing per-application
-override of any representation without forking the package.
+A custom renderer is supplied by replacing `NavigationFactory` in the consumer's
+service-manager configuration and passing it to the shown parameter. See
+[Extending](extending.md).
 
 ---
 
-## Decision 6 — StatefulHelperInterface for role injection
+## Decision 6 — StatefulHelperInterface for per-request state
 
 The `Navigation` view helper implements `Laminas\View\Helper\StatefulHelperInterface`.
 This pattern is used throughout the Laminas/Mezzio ecosystem (e.g. `UrlHelper`) for
 helpers that need per-request state injected after construction but before invocation.
 
-`NavigationMiddleware` calls `$helper->setRoles()` and `$helper->setActiveRouteName()`
-on the **same shared instance** the DI container holds. The helper is a long-lived
+`NavigationMiddleware` calls `$helper->setUser()`, `$helper->setAcl()` and
+`$helper->setActiveRouteName()` on the **same shared instance** the DI container holds. The helper is a long-lived
 service; `resetState()` is called by Laminas' `HelperPluginManager` between requests
 (in long-lived runtimes) to prevent state leakage.
 
@@ -209,31 +197,35 @@ Placing it before `RouteMiddleware` (as was briefly the case during development)
 
 ---
 
-## Decision 8 — isAllowedByRouteName on AclInterface
+## Decision 8 — How the filter iterator checks the ACL
 
-`AclInterface::isAllowedRoute()` requires a `ServerRequestInterface` because it reads
-`RouteResult` from the request. The view helper and filter iterator have no request
-object — they run inside a renderer context.
-
-Rather than inject the request into the helper (see Decision 6), a second method was
-added to `AclInterface`:
+`NavigationFilterIterator` runs inside a renderer context and inspects routes before
+any of them is dispatched, so it has no request and cannot build the `RouteResource`
+that `isAllowedRoute()` takes. It calls the ACL directly, passing the route name as
+the resource:
 
 ```php
-public function isAllowedByRouteName(
-    string $routeName,
-    array|RoleInterface|string|null $roles = null,
-): bool;
+$this->acl->isAllowed(role: $this->user, resource: $route->getName());
 ```
 
-The implementation looks up the route name in `$this->routeMappings`. If no mapping
-exists for the route name, it returns `true` — the route is not ACL-protected and is
-visible to all authenticated users.
+Resource ids are route names — `Acl::load()` registers every route from the route
+collector — so a route name is a valid id and resolves to the same rule an
+`isAllowedRoute()` call would find. There is no route-name variant on the interface:
+one would duplicate `isAllowedRoute()` in all but name.
 
-This is the correct default because routes without ACL mappings are intentionally
-public-access routes. Denying them by default would hide unprotected routes from
-navigation, which would be wrong.
+Three properties of `Acl::isAllowed()` decide the result:
 
----
+1. **Fail-closed** — a resource id the ACL has not registered is denied before
+   Laminas sees it.
+2. **Lazy load** — the first call materialises the rules from the `acl_rule` table
+   and registers the routes as resources.
+3. **Ancestor rules apply** — a route with no rule of its own inherits from its
+   nearest registered ancestor, so rules on an anchor such as `user` cover the
+   routes beneath it.
+
+The result decides visibility, so the ACL rows and `Route::setOptions(['navigation'
+=> ...])` have to agree: a nav entry whose route the ACL denies is filtered out
+before render.
 
 ## Active-item detection algorithm
 
@@ -246,9 +238,9 @@ admin.users      ← active (because descendant is active)
   admin.users.edit  ← active (matched route)
 ```
 
-`NavigationContainer::isActive(NavigationItem)` walks the tree depth-first.
-`NavigationContainer::findTrail(NavigationItem)` does the same for breadcrumbs,
-returning the ancestor chain from the root to the active item.
+`NavigationContainer::isActive(NavigationItem)` walks the tree depth-first. The private
+`findTrail()` helper does the same for breadcrumbs, returning the ancestor chain from the
+root to the active item.
 
 ---
 
@@ -259,7 +251,8 @@ Request
   │
   ▼
 NavigationMiddleware
-  setRoles([...])
+  setUser($user)
+  setAcl($acl)                     — only when the attribute is already set
   setActiveRouteName('admin.users.edit')
   │
   ▼
@@ -268,10 +261,10 @@ Template: $this->navigation('admin')
   ▼
 Navigation::__invoke('admin')
   │
-  ├── NavigationFilterIterator(routes, 'admin', $roles, $acl)
+  ├── NavigationFilterIterator(routes, 'admin', $user, $acl)
   │     forEach route:
   │       belongsToNav(options, 'admin') ?
-  │       isAllowedByRouteName(routeName, $roles) ?
+  │       isAllowed(role: $user, resource: routeName) ?
   │
   ├── Build NavigationItem objects from filtered routes
   ├── Wire parent→child relationships

@@ -12,7 +12,7 @@ the result without any separate navigation configuration file.
 | Goal | How it is met |
 |---|---|
 | Single source of truth for nav membership | `Route::setOptions(['navigation' => 'admin', ...])` lives beside the route definition |
-| ACL enforcement before render time | `NavigationFilterIterator` calls `AclInterface::isAllowedByRouteName()` per route |
+| ACL enforcement before render time | `NavigationFilterIterator` calls `AclInterface::isAllowed()` per route |
 | Multiple representations from one filtered tree | `NavigationContainer` exposes `menu()`, `breadcrumbs()`, and `sitemap()` |
 | Replaceable rendering | Every render method delegates to an optional `RendererInterface` before falling back to inline markup |
 | Active-item highlighting | `NavigationMiddleware` injects the matched route name from `RouteResult` after routing completes |
@@ -23,22 +23,22 @@ the result without any separate navigation configuration file.
 ## Package layout
 
 ```
-src/webware-navigation/
-└── src/
-    ├── ConfigProvider.php
-    ├── NavigationItem.php
-    ├── NavigationContainer.php
-    ├── NavigationFilterIterator.php
-    ├── Container/
-    │   └── NavigationMiddlewareFactory.php
-    ├── Middleware/
-    │   └── NavigationMiddleware.php
-    ├── Renderer/
-    │   └── RendererInterface.php
-    └── View/
-        └── Helper/
-            ├── Navigation.php
-            └── NavigationFactory.php
+src/
+├── ConfigProvider.php
+├── NavigationItem.php
+├── NavigationContainer.php
+├── NavigationFilterIterator.php
+├── Http/
+│   └── Middleware/
+│       ├── NavigationMiddleware.php
+│       └── Container/
+│           └── NavigationMiddlewareFactory.php
+├── Renderer/
+│   └── RendererInterface.php
+└── View/
+    └── Helper/
+        ├── Navigation.php
+        └── NavigationFactory.php
 ```
 
 ---

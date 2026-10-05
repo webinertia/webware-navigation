@@ -2,9 +2,8 @@
 
 ## Custom renderers
 
-The fastest way to customise output is to implement `RendererInterface` and wire it
-via service-manager configuration. Until the `RendererPluginManager` is implemented
-(see below), you can inject renderers by overriding `NavigationFactory`.
+Implement `RendererInterface` and pass it to the `Navigation` constructor by replacing
+`NavigationFactory` in your own service-manager configuration.
 
 ---
 
@@ -60,13 +59,13 @@ final class TailwindMenuRenderer implements RendererInterface
 
 ---
 
-## Wiring a custom renderer (current approach)
+## Wiring a custom renderer
 
-Override `NavigationFactory` in your own module's `ConfigProvider` until the
-`RendererPluginManager` is available:
+Replace `NavigationFactory` in your own module's `ConfigProvider` with a factory that
+injects the renderer:
 
 ```php
-// src/MyApp/src/Navigation/NavigationFactory.php
+// Replaces Webware\Navigation\View\Helper\NavigationFactory, which is final
 final class NavigationFactory
 {
     public function __invoke(ContainerInterface $container): Navigation
@@ -92,31 +91,6 @@ Register the override in your `ConfigProvider`:
 
 ---
 
-## Planned: RendererPluginManager
-
-The intended future implementation is a dedicated `AbstractPluginManager` subclass
-keyed to `RendererInterface`. This will allow renderer override via standard
-service-manager config without replacing the factory:
-
-```php
-// config/autoload/navigation.local.php
-return [
-    'navigation' => [
-        'renderers' => [
-            'factories' => [
-                MenuRenderer::class       => TailwindMenuRendererFactory::class,
-                BreadcrumbRenderer::class => TailwindBreadcrumbRendererFactory::class,
-            ],
-        ],
-    ],
-];
-```
-
-`NavigationFactory` will detect the `RendererPluginManager` in the container and
-resolve all three renderer slots from it, with `null` fallback when a renderer is not
-registered.
-
----
 
 ## Adding a new nav identifier
 
@@ -143,9 +117,9 @@ Then render each independently:
 
 ## Overriding the ACL check
 
-`NavigationFilterIterator` calls `AclInterface::isAllowedByRouteName()`. To change
+`NavigationFilterIterator` calls `AclInterface::isAllowed()`. To change
 ACL filtering behaviour, implement `AclInterface` and register your implementation
-in the DI container under `AclInterface::class`. This affects all ACL consumers
+in the DI container under `Webware\Core\AclInterface::class`. This affects all ACL consumers
 including `AuthorizationMiddleware`.
 
 To change filtering only for navigation without affecting the main ACL, wrap the

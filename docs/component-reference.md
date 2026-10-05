@@ -258,5 +258,5 @@ The interface itself adds `isAllowedRoute(?UserInterface $user, ResourceInterfac
 $resource)`, a thin wrapper over the same call for callers that already hold a
 `ResourceInterface`.
 
-`isAllowedByRouteName()` is not part of the API. It was removed because it duplicated
+There is no route-name variant on the interface: one would duplicate
 `isAllowedRoute()` in all but name.

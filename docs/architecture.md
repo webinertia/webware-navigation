@@ -209,38 +209,35 @@ Placing it before `RouteMiddleware` (as was briefly the case during development)
 
 ---
 
-## Decision 8 — isAllowedByRouteName on AclInterface — SUPERSEDED
+## Decision 8 — How the filter iterator checks the ACL
 
-> **Superseded — do not implement from this section.** `isAllowedByRouteName()` was
-> removed from the ACL contract because it duplicated `isAllowedRoute()` in all but
-> name, and the route-mapping subsystem (`$this->routeMappings`) described below was
-> removed with it. `NavigationFilterIterator` now calls the inherited Laminas
-> `isAllowed()` with the route name as the resource. The text below is retained as the
-> record of why the method was introduced.
-
-`AclInterface::isAllowedRoute()` requires a `ServerRequestInterface` because it reads
-`RouteResult` from the request. The view helper and filter iterator have no request
-object — they run inside a renderer context.
-
-Rather than inject the request into the helper (see Decision 6), a second method was
-added to `AclInterface`:
+`NavigationFilterIterator` runs inside a renderer context and inspects routes before
+any of them is dispatched, so it has no request and cannot build the `RouteResource`
+that `isAllowedRoute()` takes. It calls the ACL directly, passing the route name as
+the resource:
 
 ```php
-public function isAllowedByRouteName(
-    string $routeName,
-    array|RoleInterface|string|null $roles = null,
-): bool;
+$this->acl->isAllowed(role: $this->user, resource: $route->getName());
 ```
 
-The implementation looks up the route name in `$this->routeMappings`. If no mapping
-exists for the route name, it returns `true` — the route is not ACL-protected and is
-visible to all authenticated users.
+Resource ids are route names — `Acl::load()` registers every route from the route
+collector — so a route name is a valid id and resolves to the same rule an
+`isAllowedRoute()` call would find. There is no route-name variant on the interface:
+one would duplicate `isAllowedRoute()` in all but name.
 
-This is the correct default because routes without ACL mappings are intentionally
-public-access routes. Denying them by default would hide unprotected routes from
-navigation, which would be wrong.
+Three properties of `Acl::isAllowed()` decide the result:
 
----
+1. **Fail-closed** — a resource id the ACL has not registered is denied before
+   Laminas sees it.
+2. **Lazy load** — the first call materialises the rules from the `acl_rule` table
+   and registers the routes as resources.
+3. **Ancestor rules apply** — a route with no rule of its own inherits from its
+   nearest registered ancestor, so rules on an anchor such as `user` cover the
+   routes beneath it.
+
+The result decides visibility, so the ACL rows and `Route::setOptions(['navigation'
+=> ...])` have to agree: a nav entry whose route the ACL denies is filtered out
+before render.
 
 ## Active-item detection algorithm
 

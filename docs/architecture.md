@@ -209,7 +209,14 @@ Placing it before `RouteMiddleware` (as was briefly the case during development)
 
 ---
 
-## Decision 8 — isAllowedByRouteName on AclInterface
+## Decision 8 — isAllowedByRouteName on AclInterface — SUPERSEDED
+
+> **Superseded — do not implement from this section.** `isAllowedByRouteName()` was
+> removed from the ACL contract because it duplicated `isAllowedRoute()` in all but
+> name, and the route-mapping subsystem (`$this->routeMappings`) described below was
+> removed with it. `NavigationFilterIterator` now calls the inherited Laminas
+> `isAllowed()` with the route name as the resource. The text below is retained as the
+> record of why the method was introduced.
 
 `AclInterface::isAllowedRoute()` requires a `ServerRequestInterface` because it reads
 `RouteResult` from the request. The view helper and filter iterator have no request

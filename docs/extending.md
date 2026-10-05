@@ -143,9 +143,9 @@ Then render each independently:
 
 ## Overriding the ACL check
 
-`NavigationFilterIterator` calls `AclInterface::isAllowedByRouteName()`. To change
+`NavigationFilterIterator` calls `AclInterface::isAllowed()`. To change
 ACL filtering behaviour, implement `AclInterface` and register your implementation
-in the DI container under `AclInterface::class`. This affects all ACL consumers
+in the DI container under `Webware\Core\AclInterface::class`. This affects all ACL consumers
 including `AuthorizationMiddleware`.
 
 To change filtering only for navigation without affecting the main ACL, wrap the

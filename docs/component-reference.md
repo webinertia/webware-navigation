@@ -64,7 +64,8 @@ public function __construct(
 Called internally by SPL for each item in the inner iterator. Returns `true` when:
 
 1. `options['navigation']` equals `$navId` (string) or contains it (array).
-2. `AclInterface::isAllowedByRouteName($route->getName(), $roles)` returns `true`.
+2. The ACL allows the route name for the current user — `isAllowed()` with
+   `$route->getName()` as the resource — returns `true`.
 
 Both conditions must be satisfied. If either fails the route is excluded.
 
@@ -241,16 +242,21 @@ Webware\Navigation\ConfigProvider::class,
 
 ---
 
-## AclInterface additions
+## The ACL check
 
-Two methods were added to `Webware\Acl\AclInterface` to support request-free ACL
-checks from the filter iterator:
+The iterator asks the ACL directly, passing the route name as the resource:
 
-### `isAllowedByRouteName(string $routeName, $roles): bool`
+```php
+$this->acl->isAllowed(role: $this->user, resource: $route->getName());
+```
 
-Looks up `$routeName` in the internal route-to-resource/privilege mapping. Returns
-`true` (visible) when the route has no ACL mapping — unmapped routes are not protected.
-Returns `false` when the mapping exists and no role in `$roles` is permitted.
+`Webware\Core\AclInterface` extends `Laminas\Permissions\Acl\AclInterface`, so
+`isAllowed()` is the inherited Laminas method, and `Acl::load()` registers resources
+under their route names — which is why the route name is what gets passed.
 
-This is distinct from `isAllowedRoute(ServerRequestInterface, $roles)` which reads the
-mapping from the live `RouteResult` on the request.
+The interface itself adds `isAllowedRoute(?UserInterface $user, ResourceInterface
+$resource)`, a thin wrapper over the same call for callers that already hold a
+`ResourceInterface`.
+
+`isAllowedByRouteName()` is not part of the API. It was removed because it duplicated
+`isAllowedRoute()` in all but name.

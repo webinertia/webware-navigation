@@ -12,10 +12,9 @@
 
 ## Unit testing the filter iterator
 
-**Blocked until dependencies publish:** these tests type against
-`Webware\Acl\AclInterface` and `Webware\UserManager\UserInterface` — neither
-package is published yet (see `docs/webware-tools-alignment.md`, Research
-section). Skip until then.
+Both contracts — `Webware\Core\AclInterface` and `Webware\Core\UserInterface` —
+ship in `webware/webware-core`, which this package requires, so these tests run like
+any other.
 
 `NavigationFilterIterator` is the easiest component to test in isolation. Construct
 it with a stub `AclInterface` and an array of `Route` objects:
@@ -23,7 +22,7 @@ it with a stub `AclInterface` and an array of `Route` objects:
 ```php
 use Mezzio\Router\Route;
 use PHPUnit\Framework\TestCase;
-use Webware\Acl\AclInterface;
+use Webware\Core\AclInterface;
 use Webware\Navigation\NavigationFilterIterator;
 
 final class NavigationFilterIteratorTest extends TestCase
@@ -45,7 +44,7 @@ final class NavigationFilterIteratorTest extends TestCase
     {
         $route = $this->makeRoute('/secret', 'admin.secret', ['navigation' => 'admin']);
         $acl   = $this->createStub(AclInterface::class);
-        $acl->method('isAllowedByRouteName')->willReturn(false);
+        $acl->method('isAllowed')->willReturn(false);
 
         $iterator = new NavigationFilterIterator([$route], 'admin', ['guest'], $acl);
         $results  = iterator_to_array($iterator);
@@ -75,7 +74,7 @@ final class NavigationFilterIteratorTest extends TestCase
     private function alwaysAllowAcl(): AclInterface
     {
         $acl = $this->createStub(AclInterface::class);
-        $acl->method('isAllowedByRouteName')->willReturn(true);
+        $acl->method('isAllowed')->willReturn(true);
         return $acl;
     }
 }

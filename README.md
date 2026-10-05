@@ -37,10 +37,9 @@ Private package — not published to Packagist. Consume via a VCS repository ent
 After each change run `composer update webware/webware-navigation` (the lock
 pins the commit hash).
 
-Note: the package types against `Webware\Acl\AclInterface` and
-`Webware\UserManager\UserInterface`, which the consuming application provides
-until `webware-acl` + `webware-usermanager` publish — see
-`docs/webware-tools-alignment.md`.
+Note: the package types against `Webware\Core\AclInterface` and
+`Webware\Core\UserInterface`, both provided by `webware/webware-core`, which this
+package requires — see `docs/webware-tools-alignment.md`.
 
 Add to `config/config.php`:
 

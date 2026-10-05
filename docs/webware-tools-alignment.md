@@ -8,6 +8,14 @@ established by `webware/webware-tools` (reusable workflow
 webware-mailer alignment (`webware-mailer/docs/webware-tools-alignment.md`) —
 mailer is the aligned consumer and the template this repo adopts.
 
+> **Names in this audit are point-in-time.** It records the state as it was during
+> the alignment and is not maintained, so class and method names below reflect what
+> the code looked like then. In particular `Webware\Acl\AclInterface` now lives in
+> `webware/webware-core` as `Webware\Core\AclInterface`, and
+> `Webware\UserManager\UserInterface` is provided by core as
+> `Webware\Core\UserInterface`. For the current API see
+> `docs/component-reference.md` and `docs/architecture.md`.
+
 **Scope:** CI/CD pipeline, tooling configs, composer metadata, baseline files,
 and the minimum test scaffolding required for a green pipeline.
 

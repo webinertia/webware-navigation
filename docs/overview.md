@@ -23,22 +23,22 @@ the result without any separate navigation configuration file.
 ## Package layout
 
 ```
-src/webware-navigation/
-└── src/
-    ├── ConfigProvider.php
-    ├── NavigationItem.php
-    ├── NavigationContainer.php
-    ├── NavigationFilterIterator.php
-    ├── Container/
-    │   └── NavigationMiddlewareFactory.php
-    ├── Middleware/
-    │   └── NavigationMiddleware.php
-    ├── Renderer/
-    │   └── RendererInterface.php
-    └── View/
-        └── Helper/
-            ├── Navigation.php
-            └── NavigationFactory.php
+src/
+├── ConfigProvider.php
+├── NavigationItem.php
+├── NavigationContainer.php
+├── NavigationFilterIterator.php
+├── Http/
+│   └── Middleware/
+│       ├── NavigationMiddleware.php
+│       └── Container/
+│           └── NavigationMiddlewareFactory.php
+├── Renderer/
+│   └── RendererInterface.php
+└── View/
+    └── Helper/
+        ├── Navigation.php
+        └── NavigationFactory.php
 ```
 
 ---

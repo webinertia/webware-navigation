@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/github/license/webinertia/webware-navigation)](LICENSE)
 [![Continuous Integration](https://github.com/webinertia/webware-navigation/actions/workflows/required/webinertia/.github/.github/workflows/org-required-ci.yml/badge.svg)](https://github.com/webinertia/webware-navigation/actions/workflows/required/webinertia/.github/.github/workflows/org-required-ci.yml)
 [![codecov](https://codecov.io/gh/webinertia/webware-navigation/graph/badge.svg)](https://codecov.io/gh/webinertia/webware-navigation)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fwebinertia%2Fwebware-navigation%2F0.1.x)](https://dashboard.stryker-mutator.io/reports/github.com/webinertia/webware-navigation/0.1.x)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fwebinertia%2Fwebware-navigation%2F1.0.x)](https://dashboard.stryker-mutator.io/reports/github.com/webinertia/webware-navigation/1.0.x)
 
 ACL-aware navigation trees for Mezzio, driven by `Route::setOptions()`.
 
@@ -16,7 +16,7 @@ ACL-aware navigation trees for Mezzio, driven by `Route::setOptions()`.
 | [Overview](docs/overview.md) | Goals, quick start, route options reference |
 | [Architecture](docs/architecture.md) | Design decisions and rationale |
 | [Component Reference](docs/component-reference.md) | API docs for every class |
-| [Extending](docs/extending.md) | Custom renderers, planned RendererPluginManager |
+| [Extending](docs/extending.md) | Custom renderers, replacing the factory |
 | [Testing](docs/testing.md) | Unit test examples and guidance |
 
 ## Installation
@@ -29,7 +29,7 @@ Private package — not published to Packagist. Consume via a VCS repository ent
         { "type": "vcs", "url": "https://github.com/webinertia/webware-navigation" }
     ],
     "require": {
-        "webware/webware-navigation": "0.1.x-dev"
+        "webware/webware-navigation": "1.0.x-dev"
     }
 }
 ```
@@ -39,7 +39,7 @@ pins the commit hash).
 
 Note: the package types against `Webware\Core\AclInterface` and
 `Webware\Core\UserInterface`, both provided by `webware/webware-core`, which this
-package requires — see `docs/webware-tools-alignment.md`.
+package requires.
 
 Add to `config/config.php`:
 
@@ -69,6 +69,6 @@ cannot express safely. See [Architecture](docs/architecture.md), Decision 7.
 ## Namespace
 
 ```
-Package:   webware/navigation
+Package:   webware/webware-navigation
 Namespace: Webware\Navigation\
 ```

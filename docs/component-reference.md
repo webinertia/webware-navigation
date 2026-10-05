@@ -46,7 +46,7 @@ name, `icon` = `''`, `parent` = `null`, `order` = `0`.
 **Extends:** `FilterIterator`
 
 SPL filter iterator that accepts only routes belonging to a given nav identifier that
-the current user's roles are permitted to access.
+the current user is permitted to access.
 
 ### Constructor
 
@@ -54,7 +54,7 @@ the current user's roles are permitted to access.
 public function __construct(
     array            $routes,   // list<Route> from RouteCollectorInterface::getRoutes()
     string           $navId,    // navigation identifier to filter for
-    array            $roles,    // string[] current user's roles
+    UserInterface    $user,    // current user object
     AclInterface     $acl,
 )
 ```
@@ -114,7 +114,7 @@ Inline fallback options:
 
 | Key | Default | Description |
 |---|---|---|
-| `type` | `'sidebar'` | `'sidebar'` → `nav flex-column`; `'horizontal'` → `navbar-nav` |
+| `type` | `'sidebar'` | `'sidebar'` → `nav flex-column gap-1`; `'horizontal'` → `navbar-nav` |
 
 Active items receive the `active` CSS class. If an item has children a nested
 `<ul class="nav flex-column ms-3">` is emitted.
@@ -157,22 +157,23 @@ public function __construct(
 )
 ```
 
-The three `RendererInterface` parameters are `null` until a `RendererPluginManager` is
-implemented (see [Extending / Custom Renderers](extending.md)).
+`NavigationFactory` passes `null` for all three. With no renderer injected, each render
+method uses its inline fallback (see [Extending](extending.md)).
 
 ### Per-request state methods (called by NavigationMiddleware)
 
 | Method | Description |
 |---|---|
-| `setRoles(string[] $roles)` | Sets roles used for ACL filtering. |
+| `setUser(?UserInterface $user)` | Sets the user passed to the ACL check. |
+| `setAcl(AclInterface $acl)` | Replaces the ACL used for filtering. |
 | `setActiveRouteName(?string $name)` | Sets the matched route name for active detection. |
-| `resetState()` | Clears roles and active route name. Called between requests in long-lived runtimes. |
+| `resetState()` | Clears the user and the matched route name. Does not reset the ACL. Called between requests in long-lived runtimes. |
 
 ### `__invoke(string $navId): NavigationContainer`
 
 Builds and returns the container:
 
-1. Creates `NavigationFilterIterator` with all routes, nav ID, current roles, and ACL.
+1. Creates `NavigationFilterIterator` with all routes, nav ID, the current user, and the ACL.
 2. Iterates the filtered routes, building `NavigationItem` objects keyed by route name.
 3. Wires parent→child relationships.
 4. Sorts top-level items by `order`.
@@ -182,8 +183,8 @@ Builds and returns the container:
 
 ## NavigationMiddleware
 
-**Namespace:** `Webware\Navigation\Middleware`  
-**File:** `src/Middleware/NavigationMiddleware.php`  
+**Namespace:** `Webware\Navigation\Http\Middleware`  
+**File:** `src/Http/Middleware/NavigationMiddleware.php`  
 **Implements:** `MiddlewareInterface`
 
 **Pipeline position:** after `UrlHelperMiddleware` (which runs after `RouteMiddleware`).
@@ -191,11 +192,16 @@ This guarantees `RouteResult` is on the request.
 
 ### Behaviour
 
-1. Reads `UserInterface` from `$request->getAttribute(UserInterface::class)`.
-   If present, calls `$helper->setRoles([...$user->getRoles()])`.
-2. Reads `RouteResult` from `$request->getAttribute(RouteResult::class)`.
-   If matched, calls `$helper->setActiveRouteName($routeResult->getMatchedRouteName())`.
-3. Calls `$handler->handle($request)` — the helper is now primed for template use.
+1. Reads `UserInterface` from `$request->getAttribute(UserInterface::class)` and calls
+   `$helper->setUser($user)`.
+2. Reads `AclInterface` from `$request->getAttribute(AclInterface::class)` and calls
+   `$helper->setAcl($acl)` when the attribute is set. `AclMiddleware` runs after this
+   middleware in the shipped pipeline, so the attribute is not populated yet and the
+   helper keeps the ACL that `NavigationFactory` injected.
+3. Reads `RouteResult` from `$request->getAttribute(RouteResult::class)`. When it is
+   present and not a failure, calls `$helper->setActiveRouteName()` with the matched
+   route name, or `null` when that name is empty.
+4. Calls `$handler->handle($request)` — the helper is now primed for template use.
 
 ### Important: same helper instance
 
@@ -218,8 +224,9 @@ interface RendererInterface
 }
 ```
 
-Implementations are resolved by a `RendererPluginManager` (planned). Register custom
-renderers via service-manager configuration. See [Extending](extending.md).
+Nothing resolves these from configuration: `Navigation` and `NavigationContainer` take
+them as constructor arguments, and `NavigationFactory` passes `null`. See
+[Extending](extending.md).
 
 ---
 

@@ -21,7 +21,7 @@ ACL-aware navigation trees for Mezzio, driven by `Route::setOptions()`.
 
 ## Installation
 
-Private package — not published to Packagist. Consume via a VCS repository entry:
+Private package - not published to Packagist. Consume via a VCS repository entry:
 
 ```json
 {

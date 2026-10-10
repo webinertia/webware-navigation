@@ -64,8 +64,8 @@ public function __construct(
 Called internally by SPL for each item in the inner iterator. Returns `true` when:
 
 1. `options['navigation']` equals `$navId` (string) or contains it (array).
-2. The ACL allows the route name for the current user — `isAllowed()` with
-   `$route->getName()` as the resource — returns `true`.
+2. The ACL allows the route name for the current user - `isAllowed()` with
+   `$route->getName()` as the resource - returns `true`.
 
 Both conditions must be satisfied. If either fails the route is excluded.
 
@@ -132,7 +132,7 @@ visited; if the active route is found the ancestor chain is returned as
 #### `sitemap(array $options = []): string`
 
 Renders a plain `<ul class="ims-sitemap">` nested list of all items in the filtered
-tree. Not ACL-filtered again — filtering was done at construction time. Delegates to
+tree. Not ACL-filtered again - filtering was done at construction time. Delegates to
 `$sitemapRenderer` if set.
 
 ---
@@ -201,13 +201,13 @@ This guarantees `RouteResult` is on the request.
 3. Reads `RouteResult` from `$request->getAttribute(RouteResult::class)`. When it is
    present and not a failure, calls `$helper->setActiveRouteName()` with the matched
    route name, or `null` when that name is empty.
-4. Calls `$handler->handle($request)` — the helper is now primed for template use.
+4. Calls `$handler->handle($request)` - the helper is now primed for template use.
 
 ### Important: same helper instance
 
 `NavigationMiddlewareFactory` fetches the `Navigation` helper from `HelperPluginManager`.
 Laminas' plugin manager returns the **same shared instance** that templates receive.
-This is why setting state on the helper in middleware is visible to the template — they
+This is why setting state on the helper in middleware is visible to the template - they
 share the same object.
 
 ---
@@ -259,7 +259,7 @@ $this->acl->isAllowed(role: $this->user, resource: $route->getName());
 
 `Webware\Core\AclInterface` extends `Laminas\Permissions\Acl\AclInterface`, so
 `isAllowed()` is the inherited Laminas method, and `Acl::load()` registers resources
-under their route names — which is why the route name is what gets passed.
+under their route names - which is why the route name is what gets passed.
 
 The interface itself adds `isAllowedRoute(?UserInterface $user, ResourceInterface
 $resource)`, a thin wrapper over the same call for callers that already hold a

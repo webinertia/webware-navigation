@@ -1,4 +1,4 @@
-# webware-navigation — Overview
+# webware-navigation: Overview
 
 `webware-navigation` is a standalone Mezzio/Laminas view-helper package that provides
 ACL-aware navigation trees driven entirely by **route options**. Routes declare their

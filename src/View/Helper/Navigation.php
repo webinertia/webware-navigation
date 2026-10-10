@@ -30,7 +30,7 @@ use function usort;
  *
  * Renderers are optional. When non-null they override the inline fallback
  * markup in NavigationContainer. Inject custom renderers via NavigationFactory
- * by fetching them from a RendererPluginManager (planned — see NavigationFactory).
+ * by fetching them from a RendererPluginManager (planned - see NavigationFactory).
  */
 final class Navigation implements StatefulHelperInterface
 {
@@ -41,7 +41,7 @@ final class Navigation implements StatefulHelperInterface
     public function __construct(
         private readonly RouteCollectorInterface $routeCollector,
         private AclInterface $acl,
-        // Future injection points — NavigationFactory will resolve these from
+        // Future injection points - NavigationFactory will resolve these from
         // a RendererPluginManager once renderers are implemented.
         private readonly ?RendererInterface $menuRenderer = null,
         private readonly ?RendererInterface $breadcrumbRenderer = null,
@@ -54,7 +54,7 @@ final class Navigation implements StatefulHelperInterface
         $this->user            = null;
         $this->activeRouteName = null;
 
-        // acl is intentionally not reset — it is repopulated each request by NavigationMiddleware
+        // acl is intentionally not reset - it is repopulated each request by NavigationMiddleware
     }
 
     public function setAcl(AclInterface $acl): void

@@ -17,11 +17,11 @@ use function is_string;
  * building the full navigation tree.
  *
  * Route options consumed:
- *   navigation  string|string[]  — nav identifier(s) this item belongs to
- *   label       string           — display text
- *   icon        string           — Bootstrap Icon class (e.g. 'bi-grid-fill')
- *   parent      string|null      — route name of the parent item; null = top-level
- *   order       int              — sort order within its level (default 0)
+ *   navigation  string|string[] - nav identifier(s) this item belongs to
+ *   label       string - display text
+ *   icon        string - Bootstrap Icon class (e.g. 'bi-grid-fill')
+ *   parent      string|null - route name of the parent item; null = top-level
+ *   order       int - sort order within its level (default 0)
  */
 final class NavigationItem
 {

@@ -4,7 +4,7 @@
 
 - Unit tests: `WebwareTest\Navigation\` (`test/unit/`); integration tests:
   `WebwareTestIntegration\Navigation\` (`test/integration/`).
-- `phpunit.xml.dist` sets `requireCoverageMetadata="true"` — every test class
+- `phpunit.xml.dist` sets `requireCoverageMetadata="true"` - every test class
   needs `#[CoversClass]` + `#[CoversMethod]` attributes.
 - PHPUnit 13 mock-vs-stub rules apply: `createStub()` for value-returning
   doubles, `createMock()` only with `expects()`
@@ -12,7 +12,7 @@
 
 ## Unit testing the filter iterator
 
-Both contracts — `Webware\Core\AclInterface` and `Webware\Core\UserInterface` —
+Both contracts - `Webware\Core\AclInterface` and `Webware\Core\UserInterface` -
 ship in `webware/webware-core`, which this package requires, so these tests run like
 any other.
 
@@ -181,10 +181,10 @@ consuming application.
 
 ## What not to test
 
-- `NavigationItem::fromRouteOptions` — trivial extraction; test behaviour at the
+- `NavigationItem::fromRouteOptions` - trivial extraction; test behaviour at the
   container level instead.
-- Inline HTML output character-for-character — assert on semantic content
+- Inline HTML output character-for-character - assert on semantic content
   (`assertStringContainsString`) not exact markup.
 - That `NavigationMiddleware` calls `$helper->setUser()` / `setAcl()` /
-  `setActiveRouteName()` — this is covered implicitly by integration tests;
+  `setActiveRouteName()` - this is covered implicitly by integration tests;
   unit-testing it only tests the middleware's one-liners.

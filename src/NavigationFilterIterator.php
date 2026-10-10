@@ -19,7 +19,7 @@ use function is_string;
  * Filters a list<Route> to those belonging to a given navigation identifier
  * that the current user is ACL-permitted to access.
  *
- * Decouples ACL evaluation from the Navigation view helper — the helper only
+ * Decouples ACL evaluation from the Navigation view helper - the helper only
  * iterates; this class decides what is visible.
  *
  * @extends FilterIterator<int, Route, ArrayIterator<int, Route>>

@@ -10,7 +10,7 @@ user is not permitted to follow.
 
 ---
 
-## Decision 1 — Route options as the single source of truth
+## Decision 1: Route options as the single source of truth
 
 `Mezzio\Router\Route::setOptions(array $options)` is an arbitrary key/value bag
 intended for exactly this kind of extension. Rather than a parallel config array, nav
@@ -27,7 +27,7 @@ $app->get('/admin', AdminHandler::class, 'admin.dashboard')
 ```
 
 **Why this is correct:**
-- Route definition and nav metadata are co-located — one change, one place.
+- Route definition and nav metadata are co-located - one change, one place.
 - `RouteCollectorInterface::getRoutes()` returns all registered `Route` objects, so
   any service with `RouteCollectorInterface` can walk the full route list and extract
   nav items. No additional registry or config key is needed.
@@ -36,13 +36,13 @@ $app->get('/admin', AdminHandler::class, 'admin.dashboard')
   They are always current and never stale.
 
 **Rejected alternatives:**
-- Separate `navigation.config.php` — duplicates route definitions, desynchronises easily.
-- Database-driven navigation — adds a DB round-trip to every page render with no benefit
+- Separate `navigation.config.php` - duplicates route definitions, desynchronises easily.
+- Database-driven navigation - adds a DB round-trip to every page render with no benefit
   since the route list is static code.
 
 ---
 
-## Decision 2 — SPL FilterIterator for filtering
+## Decision 2: SPL FilterIterator for filtering
 
 All filtering (nav ID membership + ACL) is concentrated in `NavigationFilterIterator`,
 a `FilterIterator` subclass wrapping `ArrayIterator<Route>`.
@@ -59,7 +59,7 @@ RouteCollectorInterface::getRoutes()  →  list<Route>
 **Why FilterIterator over a foreach loop inside the helper:**
 - Separates the *what-to-include* policy from the *what-to-do-with-it* logic.
 - `NavigationFilterIterator` can be independently unit-tested by constructing it with
-  a stub `AclInterface` — no view renderer, no helper wiring needed.
+  a stub `AclInterface` - no view renderer, no helper wiring needed.
 - The helper's `__invoke` becomes clean orchestration: create iterator, build tree,
   return container.
 
@@ -68,7 +68,7 @@ RouteCollectorInterface::getRoutes()  →  list<Route>
 - `accept()` is a named method, easier to read in stack traces and test doubles.
 
 **Lazy vs. eager materialisation:**
-The iterator itself is lazy — `accept()` is only called as the `foreach` in
+The iterator itself is lazy - `accept()` is only called as the `foreach` in
 `Navigation::__invoke` pulls items. However the tree-building step (parent→child wiring)
 must materialise all items before assigning children, because a child's parent may
 appear after it in the route list. Two-pass materialisation is unavoidable for tree
@@ -77,7 +77,7 @@ hundreds of items) and the work is O(n).
 
 ---
 
-## Decision 3 — NavigationItem as a tree-aware DTO
+## Decision 3: NavigationItem as a tree-aware DTO
 
 `Route` carries its path and options but has no concept of a navigation tree. The
 parent→child relationship must be tracked somewhere. `NavigationItem` is a thin wrapper
@@ -97,11 +97,11 @@ provides a stable, typed surface.
 **Why `addChild()` is mutable while the rest is `readonly`:**
 PHP does not support lazy `readonly` initialisation. The two-pass tree construction
 algorithm requires writing children after the parent item is constructed. Limiting
-mutability to `addChild()` — a package-internal call — keeps the surface safe.
+mutability to `addChild()` - a package-internal call - keeps the surface safe.
 
 ---
 
-## Decision 4 — NavigationContainer as the render surface
+## Decision 4: NavigationContainer as the render surface
 
 The filtered tree is wrapped in `NavigationContainer` rather than returned as a plain
 array. This enables:
@@ -114,7 +114,7 @@ $this->navigation('admin')->sitemap()
 
 All three representations share the **same filtered, ACL-checked tree** built once per
 `__invoke` call. If a user cannot see route X in a menu they cannot see it in a sitemap
-or breadcrumb trail either — ACL is applied once at the container level.
+or breadcrumb trail either - ACL is applied once at the container level.
 
 `NavigationContainer` implements `IteratorAggregate` over its top-level items. This
 allows internal renderer code to `foreach` the container without exposing the raw array,
@@ -123,11 +123,11 @@ and keeps the API open for future renderer implementations.
 **Why not expose a generator from `__invoke`:**
 A generator would force the tree-building step to buffer all items anyway (parent→child
 wiring requires all items to be in memory). A generator here buys nothing and would
-make the API harder to use — callers cannot call `->menu()` on a generator.
+make the API harder to use - callers cannot call `->menu()` on a generator.
 
 ---
 
-## Decision 5 — RendererInterface injection points
+## Decision 5: RendererInterface injection points
 
 Each render method (`menu`, `breadcrumbs`, `sitemap`) checks for an optional
 `RendererInterface` before falling back to inline Bootstrap 5 markup.
@@ -154,7 +154,7 @@ service-manager configuration and passing it to the shown parameter. See
 
 ---
 
-## Decision 6 — StatefulHelperInterface for per-request state
+## Decision 6: StatefulHelperInterface for per-request state
 
 The `Navigation` view helper implements `Laminas\View\Helper\StatefulHelperInterface`.
 This pattern is used throughout the Laminas/Mezzio ecosystem (e.g. `UrlHelper`) for
@@ -166,14 +166,14 @@ service; `resetState()` is called by Laminas' `HelperPluginManager` between requ
 (in long-lived runtimes) to prevent state leakage.
 
 **Why not inject the request directly into the helper:**
-Helpers are services — injecting `ServerRequestInterface` would give them the request
+Helpers are services - injecting `ServerRequestInterface` would give them the request
 at construction time, which in a request-response lifecycle is either wrong (constructed
 once, request changes) or forces factory complexity. The `StatefulHelperInterface`
 pattern cleanly separates construction from per-request state.
 
 ---
 
-## Decision 7 — NavigationMiddleware placement: after UrlHelperMiddleware
+## Decision 7: NavigationMiddleware placement: after UrlHelperMiddleware
 
 `NavigationMiddleware` must run **after `RouteMiddleware`** so that
 `RouteResult::class` is already on the request when the middleware reads the matched
@@ -197,7 +197,7 @@ Placing it before `RouteMiddleware` (as was briefly the case during development)
 
 ---
 
-## Decision 8 — How the filter iterator checks the ACL
+## Decision 8: How the filter iterator checks the ACL
 
 `NavigationFilterIterator` runs inside a renderer context and inspects routes before
 any of them is dispatched, so it has no request and cannot build the `RouteResource`
@@ -208,18 +208,18 @@ the resource:
 $this->acl->isAllowed(role: $this->user, resource: $route->getName());
 ```
 
-Resource ids are route names — `Acl::load()` registers every route from the route
-collector — so a route name is a valid id and resolves to the same rule an
+Resource ids are route names - `Acl::load()` registers every route from the route
+collector - so a route name is a valid id and resolves to the same rule an
 `isAllowedRoute()` call would find. There is no route-name variant on the interface:
 one would duplicate `isAllowedRoute()` in all but name.
 
 Three properties of `Acl::isAllowed()` decide the result:
 
-1. **Fail-closed** — a resource id the ACL has not registered is denied before
+1. **Fail-closed**: a resource id the ACL has not registered is denied before
    Laminas sees it.
-2. **Lazy load** — the first call materialises the rules from the `acl_rule` table
+2. **Lazy load**: the first call materialises the rules from the `acl_rule` table
    and registers the routes as resources.
-3. **Ancestor rules apply** — a route with no rule of its own inherits from its
+3. **Ancestor rules apply**: a route with no rule of its own inherits from its
    nearest registered ancestor, so rules on an anchor such as `user` cover the
    routes beneath it.
 
@@ -252,7 +252,7 @@ Request
   ▼
 NavigationMiddleware
   setUser($user)
-  setAcl($acl)                     — only when the attribute is already set
+  setAcl($acl) - only when the attribute is already set
   setActiveRouteName('admin.users.edit')
   │
   ▼

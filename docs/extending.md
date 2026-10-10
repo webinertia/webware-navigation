@@ -124,7 +124,7 @@ including `AuthorizationMiddleware`.
 
 To change filtering only for navigation without affecting the main ACL, wrap the
 `Navigation` helper and override `__invoke` to use a different iterator or ACL
-instance — then register your subclass via service-manager config.
+instance - then register your subclass via service-manager config.
 
 ---
 
@@ -133,6 +133,6 @@ instance — then register your subclass via service-manager config.
 Children are appended in `addChild()` call order, which is the order they appear from
 the filter iterator (which iterates the route collector's array). If you need children
 sorted by `order`, sort them after tree-building in your `NavigationContainer`
-subclass or renderer. The current implementation does not sort children — only
+subclass or renderer. The current implementation does not sort children - only
 top-level items are sorted. This is a known limitation and a candidate for a future
 improvement.

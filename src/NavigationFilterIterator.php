@@ -32,8 +32,8 @@ final class NavigationFilterIterator extends FilterIterator
     public function __construct(
         array $routes,
         private readonly string $navId,
-        private readonly UserInterface $user,
-        private readonly AclInterface $acl,
+        private readonly ?UserInterface $user,
+        private readonly ?AclInterface $acl,
     ) {
         parent::__construct(new ArrayIterator($routes));
     }
@@ -65,9 +65,12 @@ final class NavigationFilterIterator extends FilterIterator
 
         return (
             self::belongsToNav($options, $this->navId)
-                && $this->acl->isAllowed(
-                    role    : $this->user,
-                    resource: $route->getName(),
+                && (
+                    null === $this->acl
+                    || $this->acl->isAllowed(
+                        role    : $this->user,
+                        resource: $route->getName(),
+                    )
                 )
         );
     }

@@ -40,7 +40,7 @@ final class Navigation implements StatefulHelperInterface
 
     public function __construct(
         private readonly RouteCollectorInterface $routeCollector,
-        private AclInterface $acl,
+        private ?AclInterface $acl = null,
         // Future injection points - NavigationFactory will resolve these from
         // a RendererPluginManager once renderers are implemented.
         private readonly ?RendererInterface $menuRenderer = null,
@@ -79,7 +79,6 @@ final class Navigation implements StatefulHelperInterface
      */
     public function __invoke(string $navId): NavigationContainer
     {
-        /** @var UserInterface $user the identity middleware always resolves a guest user */
         $user = $this->user;
 
         $iterator = new NavigationFilterIterator(

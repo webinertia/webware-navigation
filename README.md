@@ -38,8 +38,9 @@ After each change run `composer update webware/webware-navigation` (the lock
 pins the commit hash).
 
 Note: the package types against `Webware\Core\AclInterface` and
-`Webware\Core\UserInterface`, both provided by `webware/webware-core`, which this
-package requires.
+`Webware\Core\UserInterface`, both provided by `webware/webware-core`. That
+package is only needed to filter navigation by ACL. Without it the helper builds
+with a null ACL and includes every route in the navigation.
 
 Add to `config/config.php`:
 

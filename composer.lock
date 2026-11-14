@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d9dd32de90efa975232b614dd0573f7",
+    "content-hash": "35a5dac227714d997b25691940d64abd",
     "packages": [
         {
             "name": "brick/varexporter",
@@ -174,223 +174,6 @@
             ],
             "time": "2025-10-14T18:31:13+00:00",
             "published-time": "2025-10-14T19:13:23+00:00"
-        },
-        {
-            "name": "laminas/laminas-filter",
-            "version": "3.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-filter.git",
-                "reference": "5aac4010c55643d995b6f17e1e7e4bbf0681cd50"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-filter/zipball/5aac4010c55643d995b6f17e1e7e4bbf0681cd50",
-                "reference": "5aac4010c55643d995b6f17e1e7e4bbf0681cd50",
-                "shasum": ""
-            },
-            "require": {
-                "ext-fileinfo": "*",
-                "ext-filter": "*",
-                "ext-iconv": "*",
-                "ext-mbstring": "*",
-                "laminas/laminas-servicemanager": "^4.1.0",
-                "laminas/laminas-stdlib": "^3.19.0",
-                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
-                "psr/container": "^1 || ^2",
-                "psr/http-factory": "^1.1",
-                "psr/http-message": "^2.0"
-            },
-            "require-dev": {
-                "ext-bz2": "*",
-                "ext-zip": "*",
-                "ext-zlib": "*",
-                "laminas/laminas-coding-standard": "^3.1.0",
-                "laminas/laminas-diactoros": "^3.8",
-                "pear/archive_tar": "^1.6.0",
-                "pear/pear": "^1.10.16",
-                "phpunit/phpunit": "^11.5.42",
-                "psalm/plugin-phpunit": "^0.19.5",
-                "vimeo/psalm": "^6.13.1"
-            },
-            "suggest": {
-                "laminas/laminas-i18n": "Laminas\\I18n component for filters depending on i18n functionality",
-                "psr/http-factory-implementation": "psr/http-factory-implementation, for creating file upload instances when consuming PSR-7 in file upload filters"
-            },
-            "type": "library",
-            "extra": {
-                "laminas": {
-                    "component": "Laminas\\Filter",
-                    "config-provider": "Laminas\\Filter\\ConfigProvider"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laminas\\Filter\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Programmatically filter and normalize data and files",
-            "homepage": "https://laminas.dev",
-            "keywords": [
-                "filter",
-                "laminas"
-            ],
-            "support": {
-                "chat": "https://laminas.dev/chat",
-                "docs": "https://docs.laminas.dev/laminas-filter/",
-                "forum": "https://discourse.laminas.dev",
-                "issues": "https://github.com/laminas/laminas-filter/issues",
-                "rss": "https://github.com/laminas/laminas-filter/releases.atom",
-                "source": "https://github.com/laminas/laminas-filter"
-            },
-            "funding": [
-                {
-                    "url": "https://funding.communitybridge.org/projects/laminas-project",
-                    "type": "community_bridge"
-                }
-            ],
-            "time": "2025-11-15T21:02:51+00:00",
-            "published-time": "2025-11-15T21:03:28+00:00"
-        },
-        {
-            "name": "laminas/laminas-inputfilter",
-            "version": "3.0.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-inputfilter.git",
-                "reference": "37deaab3cf0441fb2aab0d87751c638533850820"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-inputfilter/zipball/37deaab3cf0441fb2aab0d87751c638533850820",
-                "reference": "37deaab3cf0441fb2aab0d87751c638533850820",
-                "shasum": ""
-            },
-            "require": {
-                "laminas/laminas-filter": "^3.4.0",
-                "laminas/laminas-servicemanager": "^4.0",
-                "laminas/laminas-stdlib": "^3.19",
-                "laminas/laminas-validator": "^3.11.0",
-                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
-                "psr/container": "^1.1 || ^2.0",
-                "psr/http-message": "^2.0"
-            },
-            "conflict": {
-                "zendframework/zend-inputfilter": "*"
-            },
-            "require-dev": {
-                "ext-json": "*",
-                "laminas/laminas-coding-standard": "^3.1.0",
-                "phpunit/phpunit": "^11.5.46",
-                "psalm/plugin-phpunit": "^0.19.5",
-                "vimeo/psalm": "^6.14.3"
-            },
-            "type": "library",
-            "extra": {
-                "laminas": {
-                    "config-provider": "Laminas\\InputFilter\\ConfigProvider"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laminas\\InputFilter\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Normalize and validate input sets from the web, APIs, the CLI, and more, including files",
-            "homepage": "https://laminas.dev",
-            "keywords": [
-                "inputfilter",
-                "laminas"
-            ],
-            "support": {
-                "chat": "https://laminas.dev/chat",
-                "docs": "https://docs.laminas.dev/laminas-inputfilter/",
-                "forum": "https://discourse.laminas.dev",
-                "issues": "https://github.com/laminas/laminas-inputfilter/issues",
-                "rss": "https://github.com/laminas/laminas-inputfilter/releases.atom",
-                "source": "https://github.com/laminas/laminas-inputfilter"
-            },
-            "funding": [
-                {
-                    "url": "https://funding.communitybridge.org/projects/laminas-project",
-                    "type": "community_bridge"
-                }
-            ],
-            "time": "2026-06-11T22:00:16+00:00",
-            "published-time": "2026-06-11T22:00:22+00:00"
-        },
-        {
-            "name": "laminas/laminas-permissions-acl",
-            "version": "2.18.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-permissions-acl.git",
-                "reference": "5940f6e7b9e2e3eba671f13dd26e610d2fe9acc3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-permissions-acl/zipball/5940f6e7b9e2e3eba671f13dd26e610d2fe9acc3",
-                "reference": "5940f6e7b9e2e3eba671f13dd26e610d2fe9acc3",
-                "shasum": ""
-            },
-            "require": {
-                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
-            },
-            "conflict": {
-                "laminas/laminas-servicemanager": "<3.0",
-                "zendframework/zend-permissions-acl": "*"
-            },
-            "require-dev": {
-                "laminas/laminas-coding-standard": "^3.0.1",
-                "laminas/laminas-servicemanager": "^3.21",
-                "phpbench/phpbench": "^1.2.10",
-                "phpunit/phpunit": "^10.5.58",
-                "psalm/plugin-phpunit": "^0.19.0",
-                "vimeo/psalm": "^6.13.1"
-            },
-            "suggest": {
-                "laminas/laminas-servicemanager": "To support Laminas\\Permissions\\Acl\\Assertion\\AssertionManager plugin manager usage"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Laminas\\Permissions\\Acl\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Provides a lightweight and flexible access control list (ACL) implementation for privileges management",
-            "homepage": "https://laminas.dev",
-            "keywords": [
-                "acl",
-                "laminas"
-            ],
-            "support": {
-                "chat": "https://laminas.dev/chat",
-                "docs": "https://docs.laminas.dev/laminas-permissions-acl/",
-                "forum": "https://discourse.laminas.dev",
-                "issues": "https://github.com/laminas/laminas-permissions-acl/issues",
-                "rss": "https://github.com/laminas/laminas-permissions-acl/releases.atom",
-                "source": "https://github.com/laminas/laminas-permissions-acl"
-            },
-            "funding": [
-                {
-                    "url": "https://funding.communitybridge.org/projects/laminas-project",
-                    "type": "community_bridge"
-                }
-            ],
-            "time": "2025-11-03T09:15:20+00:00",
-            "published-time": "2025-11-03T09:16:45+00:00"
         },
         {
             "name": "laminas/laminas-servicemanager",
@@ -594,86 +377,6 @@
             "published-time": "2026-06-02T11:37:21+00:00"
         },
         {
-            "name": "laminas/laminas-validator",
-            "version": "3.19.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-validator.git",
-                "reference": "98fb22b3965c322f5087856dcc4a702c3e3b0b70"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-validator/zipball/98fb22b3965c322f5087856dcc4a702c3e3b0b70",
-                "reference": "98fb22b3965c322f5087856dcc4a702c3e3b0b70",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ctype": "*",
-                "ext-fileinfo": "*",
-                "ext-filter": "*",
-                "ext-intl": "*",
-                "laminas/laminas-servicemanager": "^4.4.0",
-                "laminas/laminas-stdlib": "^3.19",
-                "laminas/laminas-translator": "^1.0 || ^2.0",
-                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
-                "psr/container": "^1.1 || ^2.0",
-                "psr/http-client": "^1.0.3",
-                "psr/http-factory": "^1.1.0",
-                "psr/http-message": "^1.0.1 || ^2.0.0"
-            },
-            "require-dev": {
-                "boundwize/structarmed": "^0.18.11",
-                "laminas/laminas-coding-standard": "^3.1.0",
-                "laminas/laminas-diactoros": "^3.8.0",
-                "laminas/laminas-translator": "^2.0",
-                "phpunit/phpunit": "^11.5.55",
-                "psalm/plugin-phpunit": "^0.19.7",
-                "vimeo/psalm": "^6.16.1"
-            },
-            "suggest": {
-                "laminas/laminas-i18n": "Laminas\\I18n component to allow translation of validation error messages",
-                "laminas/laminas-i18n-resources": "Translations of validator messages"
-            },
-            "type": "library",
-            "extra": {
-                "laminas": {
-                    "component": "Laminas\\Validator",
-                    "config-provider": "Laminas\\Validator\\ConfigProvider"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laminas\\Validator\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Validation classes for a wide range of domains, and the ability to chain validators to create complex validation criteria",
-            "homepage": "https://laminas.dev",
-            "keywords": [
-                "laminas",
-                "validator"
-            ],
-            "support": {
-                "chat": "https://laminas.dev/chat",
-                "docs": "https://docs.laminas.dev/laminas-validator/",
-                "forum": "https://discourse.laminas.dev",
-                "issues": "https://github.com/laminas/laminas-validator/issues",
-                "rss": "https://github.com/laminas/laminas-validator/releases.atom",
-                "source": "https://github.com/laminas/laminas-validator"
-            },
-            "funding": [
-                {
-                    "url": "https://crowdfunding.linuxfoundation.org/initiatives/laminas-project",
-                    "type": "custom"
-                }
-            ],
-            "time": "2026-10-28T10:53:16+00:00",
-            "published-time": "2026-10-28T10:54:23+00:00"
-        },
-        {
             "name": "laminas/laminas-view",
             "version": "3.1.0",
             "source": {
@@ -755,87 +458,6 @@
             ],
             "time": "2026-06-02T22:39:05+00:00",
             "published-time": "2026-06-02T22:53:16+00:00"
-        },
-        {
-            "name": "mezzio/mezzio-authentication",
-            "version": "1.13.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mezzio/mezzio-authentication.git",
-                "reference": "9eec425ab3386ff09dfb686d55887871ba39cc33"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mezzio/mezzio-authentication/zipball/9eec425ab3386ff09dfb686d55887871ba39cc33",
-                "reference": "9eec425ab3386ff09dfb686d55887871ba39cc33",
-                "shasum": ""
-            },
-            "require": {
-                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
-                "psr/container": "^1.0 || ^2.0",
-                "psr/http-message": "^1.0.1 || ^2.0.0",
-                "psr/http-server-middleware": "^1.0",
-                "webmozart/assert": "^1.11.0 || ^2.0.0"
-            },
-            "conflict": {
-                "container-interop/container-interop": "<1.2.0",
-                "zendframework/zend-expressive-authentication": "*"
-            },
-            "require-dev": {
-                "ext-sqlite3": "*",
-                "laminas/laminas-coding-standard": "~3.1.0",
-                "phpunit/phpunit": "^11.5.42",
-                "psalm/plugin-phpunit": "^0.19.5",
-                "vimeo/psalm": "^6.13.1"
-            },
-            "suggest": {
-                "ext-pdo": "*: for use with the PDO-backed UserRepositoryInterface implementation",
-                "mezzio/mezzio-authentication-basic": "Provides an HTTP Basic Authentication AuthenticationInterface implementation",
-                "mezzio/mezzio-authentication-laminasauthentication": "Provides a laminas-authentication AuthenticationInterface implementation",
-                "mezzio/mezzio-authentication-session": "Provides a username/password + session AuthenticationInterface implementation"
-            },
-            "type": "library",
-            "extra": {
-                "laminas": {
-                    "config-provider": "Mezzio\\Authentication\\ConfigProvider"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Mezzio\\Authentication\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Authentication middleware for Mezzio and PSR-7 applications",
-            "homepage": "https://mezzio.dev",
-            "keywords": [
-                "Authentication",
-                "http",
-                "laminas",
-                "mezzio",
-                "middleware",
-                "psr-15",
-                "psr-7"
-            ],
-            "support": {
-                "chat": "https://laminas.dev/chat",
-                "docs": "https://docs.mezzio.dev/mezzio-authentication/",
-                "forum": "https://discourse.laminas.dev",
-                "issues": "https://github.com/mezzio/mezzio-authentication/issues",
-                "rss": "https://github.com/mezzio/mezzio-authentication/releases.atom",
-                "source": "https://github.com/mezzio/mezzio-authentication"
-            },
-            "funding": [
-                {
-                    "url": "https://funding.communitybridge.org/projects/laminas-project",
-                    "type": "community_bridge"
-                }
-            ],
-            "time": "2026-02-27T12:38:47+00:00",
-            "published-time": "2026-02-27T12:39:23+00:00"
         },
         {
             "name": "mezzio/mezzio-router",
@@ -978,74 +600,6 @@
             "published-time": "2026-09-13T18:53:16+00:00"
         },
         {
-            "name": "php-db/phpdb",
-            "version": "0.6.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-db/phpdb.git",
-                "reference": "1570a6122cde75699394a6a38cf17335c3b1d622"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-db/phpdb/zipball/1570a6122cde75699394a6a38cf17335c3b1d622",
-                "reference": "1570a6122cde75699394a6a38cf17335c3b1d622",
-                "shasum": ""
-            },
-            "require": {
-                "laminas/laminas-servicemanager": "^3.0.0 || ^4.0.0",
-                "laminas/laminas-stdlib": "^3.20.0",
-                "php": "~8.3.0 || ~8.4.0 || ~8.5.0"
-            },
-            "conflict": {
-                "zendframework/zend-db": "*"
-            },
-            "require-dev": {
-                "infection/infection": "^0.34.1",
-                "laminas/laminas-eventmanager": "^3.14.0",
-                "laminas/laminas-hydrator": "^4.6.0",
-                "php-db/phpdb-qa-tools": "0.1.x-dev",
-                "phpbench/phpbench": "^1.4",
-                "phpunit/phpunit": "^11.5.42",
-                "rector/rector": "^2.0"
-            },
-            "suggest": {
-                "laminas/laminas-eventmanager": "Laminas\\EventManager component",
-                "laminas/laminas-hydrator": "(^5.0.0) Laminas\\Hydrator component for using HydratingResultSets"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "laminas": {
-                    "config-provider": "PhpDb\\ConfigProvider"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PhpDb\\": "src/",
-                    "CustomRule\\PHPUnit\\": "rector/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Database abstraction layer, SQL abstraction, result set abstraction, and RowDataGateway and TableDataGateway implementations",
-            "homepage": "https://php-db.dev",
-            "keywords": [
-                "db",
-                "laminas",
-                "mezzio",
-                "php-db"
-            ],
-            "support": {
-                "docs": "https://docs.php-db.dev/",
-                "issues": "https://github.com/php-db/phpdb/issues",
-                "source": "https://github.com/php-db/phpdb"
-            },
-            "time": "2026-10-27T04:40:00+00:00",
-            "published-time": "2026-10-27T04:40:05+00:00"
-        },
-        {
             "name": "psr/container",
             "version": "2.0.2",
             "source": {
@@ -1098,59 +652,6 @@
             },
             "time": "2021-11-05T16:47:00+00:00",
             "published-time": "2021-11-05T16:53:27+00:00"
-        },
-        {
-            "name": "psr/http-client",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/http-client.git",
-                "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-client/zipball/bb5906edc1c324c9a05aa0873d40117941e5fa90",
-                "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.0 || ^8.0",
-                "psr/http-message": "^1.0 || ^2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Http\\Client\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "https://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for HTTP clients",
-            "homepage": "https://github.com/php-fig/http-client",
-            "keywords": [
-                "http",
-                "http-client",
-                "psr",
-                "psr-18"
-            ],
-            "support": {
-                "source": "https://github.com/php-fig/http-client"
-            },
-            "time": "2023-09-23T14:17:50+00:00",
-            "published-time": "2023-09-23T14:18:12+00:00"
         },
         {
             "name": "psr/http-factory",
@@ -1443,72 +944,6 @@
             },
             "time": "2026-10-05T23:14:19+00:00",
             "published-time": "2026-10-05T23:14:25+00:00"
-        },
-        {
-            "name": "webware/webware-core",
-            "version": "1.0.0-alpha.11",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webinertia/webware-core.git",
-                "reference": "b99319fb58c90a1c716fed8e14a2be264719664d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webinertia/webware-core/zipball/b99319fb58c90a1c716fed8e14a2be264719664d",
-                "reference": "b99319fb58c90a1c716fed8e14a2be264719664d",
-                "shasum": ""
-            },
-            "require": {
-                "fig/http-message-util": "^1.1",
-                "laminas/laminas-inputfilter": "3.0.x-dev",
-                "laminas/laminas-permissions-acl": "^2.16",
-                "mezzio/mezzio-authentication": "^1.13",
-                "php": "~8.4.1 || ~8.5.0",
-                "php-db/phpdb": "^0.6.x-dev",
-                "psr/http-message": "^2.0",
-                "psr/http-server-handler": "^1.0",
-                "psr/http-server-middleware": "^1.0"
-            },
-            "require-dev": {
-                "infection/infection": "^0.35.0",
-                "laminas/laminas-diactoros": "^3.8",
-                "laminas/laminas-filter": "3.5.x-dev",
-                "php-db/phpdb": "^0.6.0",
-                "phpbench/phpbench": "^1.7",
-                "phpunit/phpunit": "^13.3",
-                "roave/backward-compatibility-check": "^8.21.0",
-                "roave/security-advisories": "dev-master",
-                "webware/webware-tools": "^1.0.0-rc.8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Webware\\Core\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Joey Smith",
-                    "email": "jsmith@webinertia.net",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Contracts and utilities for the webware-* ecosystem.",
-            "keywords": [
-                "core",
-                "mezzio",
-                "webware"
-            ],
-            "support": {
-                "issues": "https://github.com/webinertia/webware-core/issues",
-                "source": "https://github.com/webinertia/webware-core/tree/1.0.0-alpha.11"
-            },
-            "time": "2026-10-25T23:53:07+00:00",
-            "published-time": "2026-10-25T23:56:22+00:00"
         }
     ],
     "packages-dev": [
@@ -2999,6 +2434,303 @@
             "published-time": "2026-10-24T08:53:38+00:00"
         },
         {
+            "name": "laminas/laminas-filter",
+            "version": "3.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-filter.git",
+                "reference": "5aac4010c55643d995b6f17e1e7e4bbf0681cd50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-filter/zipball/5aac4010c55643d995b6f17e1e7e4bbf0681cd50",
+                "reference": "5aac4010c55643d995b6f17e1e7e4bbf0681cd50",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "ext-filter": "*",
+                "ext-iconv": "*",
+                "ext-mbstring": "*",
+                "laminas/laminas-servicemanager": "^4.1.0",
+                "laminas/laminas-stdlib": "^3.19.0",
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+                "psr/container": "^1 || ^2",
+                "psr/http-factory": "^1.1",
+                "psr/http-message": "^2.0"
+            },
+            "require-dev": {
+                "ext-bz2": "*",
+                "ext-zip": "*",
+                "ext-zlib": "*",
+                "laminas/laminas-coding-standard": "^3.1.0",
+                "laminas/laminas-diactoros": "^3.8",
+                "pear/archive_tar": "^1.6.0",
+                "pear/pear": "^1.10.16",
+                "phpunit/phpunit": "^11.5.42",
+                "psalm/plugin-phpunit": "^0.19.5",
+                "vimeo/psalm": "^6.13.1"
+            },
+            "suggest": {
+                "laminas/laminas-i18n": "Laminas\\I18n component for filters depending on i18n functionality",
+                "psr/http-factory-implementation": "psr/http-factory-implementation, for creating file upload instances when consuming PSR-7 in file upload filters"
+            },
+            "type": "library",
+            "extra": {
+                "laminas": {
+                    "component": "Laminas\\Filter",
+                    "config-provider": "Laminas\\Filter\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\Filter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Programmatically filter and normalize data and files",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "filter",
+                "laminas"
+            ],
+            "support": {
+                "chat": "https://laminas.dev/chat",
+                "docs": "https://docs.laminas.dev/laminas-filter/",
+                "forum": "https://discourse.laminas.dev",
+                "issues": "https://github.com/laminas/laminas-filter/issues",
+                "rss": "https://github.com/laminas/laminas-filter/releases.atom",
+                "source": "https://github.com/laminas/laminas-filter"
+            },
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2025-11-15T21:02:51+00:00",
+            "published-time": "2025-11-15T21:03:28+00:00"
+        },
+        {
+            "name": "laminas/laminas-inputfilter",
+            "version": "3.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-inputfilter.git",
+                "reference": "37deaab3cf0441fb2aab0d87751c638533850820"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-inputfilter/zipball/37deaab3cf0441fb2aab0d87751c638533850820",
+                "reference": "37deaab3cf0441fb2aab0d87751c638533850820",
+                "shasum": ""
+            },
+            "require": {
+                "laminas/laminas-filter": "^3.4.0",
+                "laminas/laminas-servicemanager": "^4.0",
+                "laminas/laminas-stdlib": "^3.19",
+                "laminas/laminas-validator": "^3.11.0",
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+                "psr/container": "^1.1 || ^2.0",
+                "psr/http-message": "^2.0"
+            },
+            "conflict": {
+                "zendframework/zend-inputfilter": "*"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "laminas/laminas-coding-standard": "^3.1.0",
+                "phpunit/phpunit": "^11.5.46",
+                "psalm/plugin-phpunit": "^0.19.5",
+                "vimeo/psalm": "^6.14.3"
+            },
+            "type": "library",
+            "extra": {
+                "laminas": {
+                    "config-provider": "Laminas\\InputFilter\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\InputFilter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Normalize and validate input sets from the web, APIs, the CLI, and more, including files",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "inputfilter",
+                "laminas"
+            ],
+            "support": {
+                "chat": "https://laminas.dev/chat",
+                "docs": "https://docs.laminas.dev/laminas-inputfilter/",
+                "forum": "https://discourse.laminas.dev",
+                "issues": "https://github.com/laminas/laminas-inputfilter/issues",
+                "rss": "https://github.com/laminas/laminas-inputfilter/releases.atom",
+                "source": "https://github.com/laminas/laminas-inputfilter"
+            },
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2026-06-11T22:00:16+00:00",
+            "published-time": "2026-06-11T22:00:22+00:00"
+        },
+        {
+            "name": "laminas/laminas-permissions-acl",
+            "version": "2.18.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-permissions-acl.git",
+                "reference": "5940f6e7b9e2e3eba671f13dd26e610d2fe9acc3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-permissions-acl/zipball/5940f6e7b9e2e3eba671f13dd26e610d2fe9acc3",
+                "reference": "5940f6e7b9e2e3eba671f13dd26e610d2fe9acc3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
+            },
+            "conflict": {
+                "laminas/laminas-servicemanager": "<3.0",
+                "zendframework/zend-permissions-acl": "*"
+            },
+            "require-dev": {
+                "laminas/laminas-coding-standard": "^3.0.1",
+                "laminas/laminas-servicemanager": "^3.21",
+                "phpbench/phpbench": "^1.2.10",
+                "phpunit/phpunit": "^10.5.58",
+                "psalm/plugin-phpunit": "^0.19.0",
+                "vimeo/psalm": "^6.13.1"
+            },
+            "suggest": {
+                "laminas/laminas-servicemanager": "To support Laminas\\Permissions\\Acl\\Assertion\\AssertionManager plugin manager usage"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\Permissions\\Acl\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Provides a lightweight and flexible access control list (ACL) implementation for privileges management",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "acl",
+                "laminas"
+            ],
+            "support": {
+                "chat": "https://laminas.dev/chat",
+                "docs": "https://docs.laminas.dev/laminas-permissions-acl/",
+                "forum": "https://discourse.laminas.dev",
+                "issues": "https://github.com/laminas/laminas-permissions-acl/issues",
+                "rss": "https://github.com/laminas/laminas-permissions-acl/releases.atom",
+                "source": "https://github.com/laminas/laminas-permissions-acl"
+            },
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2025-11-03T09:15:20+00:00",
+            "published-time": "2025-11-03T09:16:45+00:00"
+        },
+        {
+            "name": "laminas/laminas-validator",
+            "version": "3.19.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-validator.git",
+                "reference": "98fb22b3965c322f5087856dcc4a702c3e3b0b70"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-validator/zipball/98fb22b3965c322f5087856dcc4a702c3e3b0b70",
+                "reference": "98fb22b3965c322f5087856dcc4a702c3e3b0b70",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-fileinfo": "*",
+                "ext-filter": "*",
+                "ext-intl": "*",
+                "laminas/laminas-servicemanager": "^4.4.0",
+                "laminas/laminas-stdlib": "^3.19",
+                "laminas/laminas-translator": "^1.0 || ^2.0",
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+                "psr/container": "^1.1 || ^2.0",
+                "psr/http-client": "^1.0.3",
+                "psr/http-factory": "^1.1.0",
+                "psr/http-message": "^1.0.1 || ^2.0.0"
+            },
+            "require-dev": {
+                "boundwize/structarmed": "^0.18.11",
+                "laminas/laminas-coding-standard": "^3.1.0",
+                "laminas/laminas-diactoros": "^3.8.0",
+                "laminas/laminas-translator": "^2.0",
+                "phpunit/phpunit": "^11.5.55",
+                "psalm/plugin-phpunit": "^0.19.7",
+                "vimeo/psalm": "^6.16.1"
+            },
+            "suggest": {
+                "laminas/laminas-i18n": "Laminas\\I18n component to allow translation of validation error messages",
+                "laminas/laminas-i18n-resources": "Translations of validator messages"
+            },
+            "type": "library",
+            "extra": {
+                "laminas": {
+                    "component": "Laminas\\Validator",
+                    "config-provider": "Laminas\\Validator\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\Validator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Validation classes for a wide range of domains, and the ability to chain validators to create complex validation criteria",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "laminas",
+                "validator"
+            ],
+            "support": {
+                "chat": "https://laminas.dev/chat",
+                "docs": "https://docs.laminas.dev/laminas-validator/",
+                "forum": "https://discourse.laminas.dev",
+                "issues": "https://github.com/laminas/laminas-validator/issues",
+                "rss": "https://github.com/laminas/laminas-validator/releases.atom",
+                "source": "https://github.com/laminas/laminas-validator"
+            },
+            "funding": [
+                {
+                    "url": "https://crowdfunding.linuxfoundation.org/initiatives/laminas-project",
+                    "type": "custom"
+                }
+            ],
+            "time": "2026-10-28T10:53:16+00:00",
+            "published-time": "2026-10-28T10:54:23+00:00"
+        },
+        {
             "name": "marc-mabe/php-enum",
             "version": "v4.7.2",
             "source": {
@@ -3071,6 +2803,87 @@
             },
             "time": "2025-09-14T11:18:39+00:00",
             "published-time": "2025-09-14T11:32:17+00:00"
+        },
+        {
+            "name": "mezzio/mezzio-authentication",
+            "version": "1.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mezzio/mezzio-authentication.git",
+                "reference": "9eec425ab3386ff09dfb686d55887871ba39cc33"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mezzio/mezzio-authentication/zipball/9eec425ab3386ff09dfb686d55887871ba39cc33",
+                "reference": "9eec425ab3386ff09dfb686d55887871ba39cc33",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+                "psr/container": "^1.0 || ^2.0",
+                "psr/http-message": "^1.0.1 || ^2.0.0",
+                "psr/http-server-middleware": "^1.0",
+                "webmozart/assert": "^1.11.0 || ^2.0.0"
+            },
+            "conflict": {
+                "container-interop/container-interop": "<1.2.0",
+                "zendframework/zend-expressive-authentication": "*"
+            },
+            "require-dev": {
+                "ext-sqlite3": "*",
+                "laminas/laminas-coding-standard": "~3.1.0",
+                "phpunit/phpunit": "^11.5.42",
+                "psalm/plugin-phpunit": "^0.19.5",
+                "vimeo/psalm": "^6.13.1"
+            },
+            "suggest": {
+                "ext-pdo": "*: for use with the PDO-backed UserRepositoryInterface implementation",
+                "mezzio/mezzio-authentication-basic": "Provides an HTTP Basic Authentication AuthenticationInterface implementation",
+                "mezzio/mezzio-authentication-laminasauthentication": "Provides a laminas-authentication AuthenticationInterface implementation",
+                "mezzio/mezzio-authentication-session": "Provides a username/password + session AuthenticationInterface implementation"
+            },
+            "type": "library",
+            "extra": {
+                "laminas": {
+                    "config-provider": "Mezzio\\Authentication\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mezzio\\Authentication\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Authentication middleware for Mezzio and PSR-7 applications",
+            "homepage": "https://mezzio.dev",
+            "keywords": [
+                "Authentication",
+                "http",
+                "laminas",
+                "mezzio",
+                "middleware",
+                "psr-15",
+                "psr-7"
+            ],
+            "support": {
+                "chat": "https://laminas.dev/chat",
+                "docs": "https://docs.mezzio.dev/mezzio-authentication/",
+                "forum": "https://discourse.laminas.dev",
+                "issues": "https://github.com/mezzio/mezzio-authentication/issues",
+                "rss": "https://github.com/mezzio/mezzio-authentication/releases.atom",
+                "source": "https://github.com/mezzio/mezzio-authentication"
+            },
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2026-02-27T12:38:47+00:00",
+            "published-time": "2026-02-27T12:39:23+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3457,6 +3270,74 @@
             },
             "time": "2022-02-21T01:04:05+00:00",
             "published-time": "2022-02-21T01:04:30+00:00"
+        },
+        {
+            "name": "php-db/phpdb",
+            "version": "0.6.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-db/phpdb.git",
+                "reference": "1570a6122cde75699394a6a38cf17335c3b1d622"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-db/phpdb/zipball/1570a6122cde75699394a6a38cf17335c3b1d622",
+                "reference": "1570a6122cde75699394a6a38cf17335c3b1d622",
+                "shasum": ""
+            },
+            "require": {
+                "laminas/laminas-servicemanager": "^3.0.0 || ^4.0.0",
+                "laminas/laminas-stdlib": "^3.20.0",
+                "php": "~8.3.0 || ~8.4.0 || ~8.5.0"
+            },
+            "conflict": {
+                "zendframework/zend-db": "*"
+            },
+            "require-dev": {
+                "infection/infection": "^0.34.1",
+                "laminas/laminas-eventmanager": "^3.14.0",
+                "laminas/laminas-hydrator": "^4.6.0",
+                "php-db/phpdb-qa-tools": "0.1.x-dev",
+                "phpbench/phpbench": "^1.4",
+                "phpunit/phpunit": "^11.5.42",
+                "rector/rector": "^2.0"
+            },
+            "suggest": {
+                "laminas/laminas-eventmanager": "Laminas\\EventManager component",
+                "laminas/laminas-hydrator": "(^5.0.0) Laminas\\Hydrator component for using HydratingResultSets"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laminas": {
+                    "config-provider": "PhpDb\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpDb\\": "src/",
+                    "CustomRule\\PHPUnit\\": "rector/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Database abstraction layer, SQL abstraction, result set abstraction, and RowDataGateway and TableDataGateway implementations",
+            "homepage": "https://php-db.dev",
+            "keywords": [
+                "db",
+                "laminas",
+                "mezzio",
+                "php-db"
+            ],
+            "support": {
+                "docs": "https://docs.php-db.dev/",
+                "issues": "https://github.com/php-db/phpdb/issues",
+                "source": "https://github.com/php-db/phpdb"
+            },
+            "time": "2026-10-27T04:40:00+00:00",
+            "published-time": "2026-10-27T04:40:05+00:00"
         },
         {
             "name": "php-standard-library/async",
@@ -6029,6 +5910,59 @@
             },
             "time": "2022-11-25T14:36:26+00:00",
             "published-time": "2022-11-25T14:59:22+00:00"
+        },
+        {
+            "name": "psr/http-client",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-client.git",
+                "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-client/zipball/bb5906edc1c324c9a05aa0873d40117941e5fa90",
+                "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0 || ^8.0",
+                "psr/http-message": "^1.0 || ^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP clients",
+            "homepage": "https://github.com/php-fig/http-client",
+            "keywords": [
+                "http",
+                "http-client",
+                "psr",
+                "psr-18"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/http-client"
+            },
+            "time": "2023-09-23T14:17:50+00:00",
+            "published-time": "2023-09-23T14:18:12+00:00"
         },
         {
             "name": "psr/log",
@@ -10754,6 +10688,72 @@
             },
             "time": "2024-03-07T20:33:40+00:00",
             "published-time": "2024-03-07T20:34:42+00:00"
+        },
+        {
+            "name": "webware/webware-core",
+            "version": "1.0.0-alpha.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webinertia/webware-core.git",
+                "reference": "b99319fb58c90a1c716fed8e14a2be264719664d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webinertia/webware-core/zipball/b99319fb58c90a1c716fed8e14a2be264719664d",
+                "reference": "b99319fb58c90a1c716fed8e14a2be264719664d",
+                "shasum": ""
+            },
+            "require": {
+                "fig/http-message-util": "^1.1",
+                "laminas/laminas-inputfilter": "3.0.x-dev",
+                "laminas/laminas-permissions-acl": "^2.16",
+                "mezzio/mezzio-authentication": "^1.13",
+                "php": "~8.4.1 || ~8.5.0",
+                "php-db/phpdb": "^0.6.x-dev",
+                "psr/http-message": "^2.0",
+                "psr/http-server-handler": "^1.0",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "infection/infection": "^0.35.0",
+                "laminas/laminas-diactoros": "^3.8",
+                "laminas/laminas-filter": "3.5.x-dev",
+                "php-db/phpdb": "^0.6.0",
+                "phpbench/phpbench": "^1.7",
+                "phpunit/phpunit": "^13.3",
+                "roave/backward-compatibility-check": "^8.21.0",
+                "roave/security-advisories": "dev-master",
+                "webware/webware-tools": "^1.0.0-rc.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Webware\\Core\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Joey Smith",
+                    "email": "jsmith@webinertia.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Contracts and utilities for the webware-* ecosystem.",
+            "keywords": [
+                "core",
+                "mezzio",
+                "webware"
+            ],
+            "support": {
+                "issues": "https://github.com/webinertia/webware-core/issues",
+                "source": "https://github.com/webinertia/webware-core/tree/1.0.0-alpha.11"
+            },
+            "time": "2026-10-25T23:53:07+00:00",
+            "published-time": "2026-10-25T23:56:22+00:00"
         },
         {
             "name": "webware/webware-tools",

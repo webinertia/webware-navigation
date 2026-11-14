@@ -22,8 +22,7 @@
         "psr/container": "^2.0",
         "psr/http-message": "^2.0",
         "psr/http-server-handler": "^1.0",
-        "psr/http-server-middleware": "^1.0",
-        "webware/webware-core": "^1.0.0-alpha.6"
+        "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
         "infection/infection": "^0.35.0",
@@ -32,7 +31,11 @@
         "phpunit/phpunit": "^13.4.4",
         "roave/backward-compatibility-check": "^8.21.0",
         "roave/security-advisories": "dev-master",
+        "webware/webware-core": "^1.0.0-alpha.6",
         "webware/webware-tools": "^1.0.0-rc.14"
+    },
+    "suggest": {
+        "webware/webware-core": "Only needed to filter navigation by ACL; without it the helper builds with a null ACL and the ACL check is skipped"
     },
     "autoload": {
         "psr-4": {

@@ -20,6 +20,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use ReflectionProperty;
 use Webware\Core\AclInterface;
 use Webware\Navigation\View\Helper\Navigation;
 use Webware\Navigation\View\Helper\NavigationFactory;
@@ -28,6 +29,28 @@ use Webware\Navigation\View\Helper\NavigationFactory;
 #[CoversMethod(NavigationFactory::class, '__invoke')]
 final class NavigationFactoryTest extends TestCase
 {
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function buildsTheHelperWithANullAclWhenTheContainerLacksOne(): void
+    {
+        $routeCollector = $this->createStub(RouteCollectorInterface::class);
+
+        $container = $this->createStub(ContainerInterface::class);
+        $container->method('has')->willReturn(false);
+        $container
+            ->method('get')
+            ->willReturnCallback(
+                static fn(string $id): RouteCollectorInterface => $routeCollector,
+            );
+
+        $helper = new NavigationFactory()($container);
+
+        static::assertInstanceOf(Navigation::class, $helper);
+        static::assertNull(new ReflectionProperty(Navigation::class, 'acl')->getValue($helper));
+    }
+
     /**
      * @throws \PHPUnit\Exception
      */
@@ -45,25 +68,6 @@ final class NavigationFactoryTest extends TestCase
                 static fn(string $id): RouteCollectorInterface|AclInterface => AclInterface::class === $id
                     ? $acl
                     : $routeCollector,
-            );
-
-        static::assertInstanceOf(Navigation::class, new NavigationFactory()($container));
-    }
-
-    /**
-     * @throws \PHPUnit\Exception
-     */
-    #[Test]
-    public function resolvesTheHelperWhenNoAclServiceIsRegistered(): void
-    {
-        $routeCollector = $this->createStub(RouteCollectorInterface::class);
-
-        $container = $this->createStub(ContainerInterface::class);
-        $container->method('has')->willReturn(false);
-        $container
-            ->method('get')
-            ->willReturnCallback(
-                static fn(string $id): RouteCollectorInterface => $routeCollector,
             );
 
         static::assertInstanceOf(Navigation::class, new NavigationFactory()($container));

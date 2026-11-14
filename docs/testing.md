@@ -13,8 +13,8 @@
 ## Unit testing the filter iterator
 
 Both contracts - `Webware\Core\AclInterface` and `Webware\Core\UserInterface` -
-ship in `webware/webware-core`, which this package requires, so these tests run like
-any other.
+ship in `webware/webware-core`, which this package requires for development only,
+so these tests run like any other.
 
 `NavigationFilterIterator` is the easiest component to test in isolation. Construct
 it with a stub `AclInterface` and an array of `Route` objects:

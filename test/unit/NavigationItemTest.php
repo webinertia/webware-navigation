@@ -26,6 +26,7 @@ use Webware\Navigation\NavigationItem;
 #[CoversMethod(NavigationItem::class, 'fromRouteOptions')]
 #[CoversMethod(NavigationItem::class, 'addChild')]
 #[CoversMethod(NavigationItem::class, 'getChildren')]
+#[CoversMethod(NavigationItem::class, 'getHref')]
 #[CoversMethod(NavigationItem::class, 'hasChildren')]
 final class NavigationItemTest extends TestCase
 {
@@ -50,6 +51,22 @@ final class NavigationItemTest extends TestCase
      * @throws \PHPUnit\Exception
      */
     #[Test]
+    public function consumesTheFragmentAsGiven(): void
+    {
+        $item = NavigationItem::fromRouteOptions(
+            $this->makeRoute('docs.address', []),
+            ['fragment' => 'the-index-rule'],
+        );
+
+        // Used verbatim, not slugified: translating a heading into an anchor belongs to
+        // whoever writes the option, because the rule lives where the heading was made.
+        $this->assertSame('the-index-rule', $item->fragment);
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
     public function fallsBackToDefaults(): void
     {
         $item = NavigationItem::fromRouteOptions($this->makeRoute('admin.dashboard', []), []);
@@ -58,6 +75,45 @@ final class NavigationItemTest extends TestCase
         $this->assertSame('', $item->icon);
         $this->assertNull($item->parent);
         $this->assertSame(0, $item->order);
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function hrefAppendsTheFragmentToTheRoutePath(): void
+    {
+        $section = NavigationItem::fromRouteOptions(
+            $this->makeRoute('docs.address', []),
+            ['fragment' => 'the-index-rule'],
+        );
+        $plain = NavigationItem::fromRouteOptions($this->makeRoute('docs.index', []), []);
+
+        $this->assertSame('/path#the-index-rule', $section->getHref());
+        // No trailing separator when there is no fragment.
+        $this->assertSame('/path', $plain->getHref());
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function ignoresAnUnusableFragment(): void
+    {
+        // An empty fragment would render `href="/path#"`, which is not the same link as
+        // `/path` and names no anchor, so it is treated as absent. A non-string cannot
+        // become part of a URL at all.
+        $empty = NavigationItem::fromRouteOptions(
+            $this->makeRoute('docs.address', []),
+            ['fragment' => ''],
+        );
+        $notString = NavigationItem::fromRouteOptions(
+            $this->makeRoute('docs.address', []),
+            ['fragment' => 7],
+        );
+
+        $this->assertNull($empty->fragment);
+        $this->assertNull($notString->fragment);
     }
 
     /**

@@ -160,7 +160,7 @@ final class NavigationContainer implements IteratorAggregate
 
             $html .= sprintf(
                 '<li class="breadcrumb-item"><a href="%s">%s</a></li>',
-                $this->e($item->route->getPath()),
+                $this->e($item->getHref()),
                 $this->e($item->label),
             );
         }
@@ -192,13 +192,13 @@ final class NavigationContainer implements IteratorAggregate
         $isActive = $this->isActive($item);
         $active   = $isActive ? ' active' : '';
         $icon     = '' === $item->icon ? '' : sprintf('<i class="bi %s me-2"></i>', $this->e($item->icon));
-        $path     = $item->route->getPath();
+        $href     = $item->getHref();
         $label    = $this->e($item->label);
 
         $html = sprintf(
             '<li class="nav-item"><a class="nav-link%s" href="%s">%s%s</a>',
             $active,
-            $this->e($path),
+            $this->e($href),
             $icon,
             $label,
         );
@@ -231,7 +231,7 @@ final class NavigationContainer implements IteratorAggregate
     {
         $html = sprintf(
             '<li><a href="%s">%s</a>',
-            $this->e($item->route->getPath()),
+            $this->e($item->getHref()),
             $this->e($item->label),
         );
 

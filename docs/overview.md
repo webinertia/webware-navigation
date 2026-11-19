@@ -77,6 +77,25 @@ $app->get('/admin/users/edit', UserEditHandler::class, 'admin.users.edit')
     ]);
 ```
 
+#### Linking to a section of a page
+
+A `fragment` option appends an anchor to the route's path, so one page can appear as
+several navigation entries without a second route:
+
+```php
+$app->get('/docs/address', AddressHandler::class, 'docs.address')
+    ->setOptions([
+        'navigation' => 'docs',
+        'label'      => 'The index rule',
+        'fragment'   => 'the-index-rule',
+    ]);
+// renders href="/docs/address#the-index-rule"
+```
+
+The value is used as given. If you need a heading's slug, take it from the heading rather
+than retyping it: `commondoc` exposes each document's headings, with the anchor the
+renderer emits, through `CommonDoc\View\PageContext::sections()`.
+
 ### 2. Use in a template
 
 ```php

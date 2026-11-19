@@ -92,6 +92,36 @@ final class NavigationContainerTest extends TestCase
      * @throws \PHPUnit\Exception
      */
     #[Test]
+    public function breadcrumbsLinkToTheSectionAnAncestorNames(): void
+    {
+        // The last crumb is the current page and carries no anchor, but an ancestor that
+        // names a section still has to reach it.
+        $parent = $this->makeItem(
+            label    : 'The index rule',
+            path     : '/docs/address',
+            routeName: 'docs.address',
+            fragment : 'the-index-rule',
+        );
+        $child = $this->makeItem(
+            label    : 'Details',
+            path     : '/docs/address/details',
+            routeName: 'docs.address.details',
+        );
+        $parent->addChild($child);
+
+        $this->assertSame(
+            '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
+                . '<li class="breadcrumb-item"><a href="/docs/address#the-index-rule">The index rule</a></li>'
+                . '<li class="breadcrumb-item active" aria-current="page">Details</li>'
+                . '</ol></nav>',
+            new NavigationContainer([$parent], 'docs.address.details')->breadcrumbs(),
+        );
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
     public function breadcrumbsRenderTheTrailWithOnlyTheLastItemActive(): void
     {
         $parent = $this->makeItem('Users', '/admin/users', 'admin.users');
@@ -142,6 +172,25 @@ final class NavigationContainerTest extends TestCase
      * @throws \PHPUnit\Exception
      */
     #[Test]
+    public function itemsWithoutAFragmentLinkToTheRoutePathUnchanged(): void
+    {
+        $item = $this->makeItem(
+            label    : 'Addresses',
+            path     : '/docs/address',
+            routeName: 'docs.address',
+        );
+
+        // No trailing separator: a fragment-less item must link exactly as before.
+        $this->assertSame(
+            '<ul class="ims-sitemap"><li><a href="/docs/address">Addresses</a></li></ul>',
+            new NavigationContainer([$item], null)->sitemap(),
+        );
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
     public function labelsAndPathsAreEscaped(): void
     {
         $item = $this->makeItem('Tom\'s & "Jerry"', '/admin', 'admin.escaped');
@@ -164,6 +213,27 @@ final class NavigationContainerTest extends TestCase
         $container = new NavigationContainer([], null, menuRenderer: $renderer);
 
         $this->assertSame('<nav>rendered</nav>', $container->menu(['type' => 'horizontal']));
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function menuLinksToTheSectionTheItemNames(): void
+    {
+        $item = $this->makeItem(
+            label    : 'The index rule',
+            path     : '/docs/address',
+            routeName: 'docs.address',
+            fragment : 'the-index-rule',
+        );
+
+        $this->assertSame(
+            '<ul class="nav flex-column gap-1">'
+                . '<li class="nav-item"><a class="nav-link" href="/docs/address#the-index-rule">The index rule</a></li>'
+                . '</ul>',
+            new NavigationContainer([$item], null)->menu(),
+        );
     }
 
     /**
@@ -307,6 +377,25 @@ final class NavigationContainerTest extends TestCase
      * @throws \PHPUnit\Exception
      */
     #[Test]
+    public function sitemapLinksToTheSectionTheItemNames(): void
+    {
+        $item = $this->makeItem(
+            label    : 'The index rule',
+            path     : '/docs/address',
+            routeName: 'docs.address',
+            fragment : 'the-index-rule',
+        );
+
+        $this->assertSame(
+            '<ul class="ims-sitemap"><li><a href="/docs/address#the-index-rule">The index rule</a></li></ul>',
+            new NavigationContainer([$item], null)->sitemap(),
+        );
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
     public function sitemapRendersExactMarkupForNestedChildren(): void
     {
         $parent = $this->makeItem('Users', '/admin/users', 'admin.users');
@@ -343,10 +432,15 @@ final class NavigationContainerTest extends TestCase
      *
      * @throws \PHPUnit\Exception
      */
-    private function makeItem(string $label, string $path, string $routeName, string $icon = ''): NavigationItem
-    {
+    private function makeItem(
+        string $label,
+        string $path,
+        string $routeName,
+        string $icon = '',
+        ?string $fragment = null,
+    ): NavigationItem {
         $route = new Route($path, $this->createStub(MiddlewareInterface::class), ['GET'], $routeName);
-        $route->setOptions(['label' => $label, 'icon' => $icon]);
+        $route->setOptions(['label' => $label, 'icon' => $icon, 'fragment' => $fragment]);
 
         return NavigationItem::fromRouteOptions($route, $route->getOptions());
     }

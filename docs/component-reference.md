@@ -15,10 +15,16 @@ public function __construct(
     public readonly Route   $route,
     public readonly string  $label,
     public readonly string  $icon,
-    public readonly ?string $parent,  // route name of parent; null = top-level
+    public readonly ?string $parent,   // route name of parent; null = top-level
     public readonly int     $order,
 )
+
+public ?string $fragment = null;  // anchor to reach a page section
 ```
+
+`fragment` is assigned by `fromRouteOptions()` rather than promoted, because the
+constructor is already at the linter's parameter limit and the fragment is not part of an
+item's identity: it says which part of the page to open, not which page.
 
 ### Static factory
 
@@ -26,8 +32,14 @@ public function __construct(
 NavigationItem::fromRouteOptions(Route $route, array $options): self
 ```
 
-Reads `label`, `icon`, `parent`, `order` from `$options`. Defaults: `label` = route
-name, `icon` = `''`, `parent` = `null`, `order` = `0`.
+Reads `label`, `icon`, `parent`, `order`, `fragment` from `$options`. Defaults: `label` =
+route name, `icon` = `''`, `parent` = `null`, `order` = `0`, `fragment` = `null`.
+
+A `fragment` that is not a non-empty string is treated as absent. An empty fragment would
+render `href="/path#"`, which names no anchor and is not the same link as `/path`.
+
+The fragment is used verbatim. Translating a heading into a slug belongs to whoever writes
+the option, because the rule for that translation lives where the heading was produced.
 
 ### Methods
 
@@ -35,6 +47,7 @@ name, `icon` = `''`, `parent` = `null`, `order` = `0`.
 |---|---|---|
 | `addChild(NavigationItem)` | `void` | Appends a child. Called by `Navigation::__invoke` during tree build. |
 | `getChildren()` | `list<NavigationItem>` | All direct children in insertion order. |
+| `getHref()` | `string` | The route path, plus `#<fragment>` when the item names a section. All three renderers use this rather than `route->getPath()` so a link target cannot drift between them. |
 | `hasChildren()` | `bool` | `true` when at least one child exists. |
 
 ---

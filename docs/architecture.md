@@ -83,11 +83,16 @@ hundreds of items) and the work is O(n).
 parent→child relationship must be tracked somewhere. `NavigationItem` is a thin wrapper
 that:
 
-- Extracts typed fields (`label`, `icon`, `parent`, `order`) from `getOptions()` once,
-  so templates never call `$route->getOptions()['label'] ?? ''`.
+- Extracts typed fields (`label`, `icon`, `parent`, `order`, `fragment`) from
+  `getOptions()` once, so templates never call `$route->getOptions()['label'] ?? ''`.
 - Holds a mutable `$children` list populated during tree construction.
 - Retains a reference to the original `Route` so templates can call
   `$item->route->getPath()` and `$item->route->getName()` without extra lookups.
+- Derives the link target as `getHref()`, which is the route path plus the item's
+  fragment when it has one. A section link is the same route with an anchor appended,
+  so the fragment travels beside the path rather than inside it: a fragment in the
+  route's own path would register a route nothing can match and would pollute the
+  container that active-route detection reads.
 
 **Why not return bare `Route[]` from the helper:**
 Callers would need to call `getOptions()` repeatedly in templates, coupling templates

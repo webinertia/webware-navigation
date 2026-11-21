@@ -6,6 +6,7 @@ namespace Webware\Navigation;
 
 use ArrayIterator;
 use IteratorAggregate;
+use Mezzio\Router\Exception\RuntimeException as RouterException;
 use Override;
 use Traversable;
 use Webware\Navigation\Renderer\RendererInterface;
@@ -43,7 +44,11 @@ final class NavigationContainer implements IteratorAggregate
         private readonly ?RendererInterface $sitemapRenderer = null,
     ) {}
 
-    /** @param array<string, mixed> $options */
+    /**
+     * @param array<string, mixed> $options
+     *
+     * @throws RouterException When an item's address cannot be generated
+     */
     public function breadcrumbs(array $options = []): string
     {
         if (null !== $this->breadcrumbRenderer) {
@@ -93,7 +98,11 @@ final class NavigationContainer implements IteratorAggregate
     // Rendering
     // -------------------------------------------------------------------------
 
-    /** @param array<string, mixed> $options */
+    /**
+     * @param array<string, mixed> $options
+     *
+     * @throws RouterException When an item's address cannot be generated
+     */
     public function menu(array $options = []): string
     {
         if (null !== $this->menuRenderer) {
@@ -103,7 +112,11 @@ final class NavigationContainer implements IteratorAggregate
         return $this->renderMenuInline($options);
     }
 
-    /** @param array<string, mixed> $options */
+    /**
+     * @param array<string, mixed> $options
+     *
+     * @throws RouterException When an item's address cannot be generated
+     */
     public function sitemap(array $options = []): string
     {
         if (null !== $this->sitemapRenderer) {
@@ -138,6 +151,7 @@ final class NavigationContainer implements IteratorAggregate
         return null;
     }
 
+    /** @throws RouterException When an item's address cannot be generated */
     private function renderBreadcrumbsInline(): string
     {
         $trail = $this->resolveBreadcrumbTrail();
@@ -172,7 +186,11 @@ final class NavigationContainer implements IteratorAggregate
     // Inline fallback renderers
     // -------------------------------------------------------------------------
 
-    /** @param array<string, mixed> $options */
+    /**
+     * @param array<string, mixed> $options
+     *
+     * @throws RouterException When an item's address cannot be generated
+     */
     private function renderMenuInline(array $options): string
     {
         $type    = (string) ($options['type'] ?? 'sidebar');
@@ -187,6 +205,7 @@ final class NavigationContainer implements IteratorAggregate
         return "{$html}</ul>";
     }
 
+    /** @throws RouterException When an item's address cannot be generated */
     private function renderMenuItemInline(NavigationItem $item): string
     {
         $isActive = $this->isActive($item);
@@ -216,6 +235,7 @@ final class NavigationContainer implements IteratorAggregate
         return "{$html}</li>";
     }
 
+    /** @throws RouterException When an item's address cannot be generated */
     private function renderSitemapInline(): string
     {
         $html = '<ul class="ims-sitemap">';
@@ -227,6 +247,7 @@ final class NavigationContainer implements IteratorAggregate
         return "{$html}</ul>";
     }
 
+    /** @throws RouterException When an item's address cannot be generated */
     private function renderSitemapItemInline(NavigationItem $item): string
     {
         $html = sprintf(

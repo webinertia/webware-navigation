@@ -6,6 +6,7 @@ namespace Webware\Navigation\View\Helper;
 
 use Laminas\View\Helper\StatefulHelperInterface;
 use Mezzio\Router\RouteCollectorInterface;
+use Mezzio\Router\RouterInterface;
 use Override;
 use Webware\Core\AclInterface;
 use Webware\Core\UserInterface;
@@ -38,6 +39,8 @@ final class Navigation implements StatefulHelperInterface
 
     private ?string $activeRouteName = null;
 
+    private ?RouterInterface $router = null;
+
     public function __construct(
         private readonly RouteCollectorInterface $routeCollector,
         private ?AclInterface $acl = null,
@@ -67,6 +70,12 @@ final class Navigation implements StatefulHelperInterface
         $this->activeRouteName = $name;
     }
 
+    /** Items link through this router when it is set, so a parameterised route links to its generated address. */
+    public function setRouter(?RouterInterface $router): void
+    {
+        $this->router = $router;
+    }
+
     public function setUser(?UserInterface $user): void
     {
         $this->user = $user;
@@ -92,7 +101,11 @@ final class Navigation implements StatefulHelperInterface
         $allItems = [];
 
         foreach ($iterator as $route) {
-            $allItems[$route->getName()] = NavigationItem::fromRouteOptions($route, $route->getOptions());
+            $allItems[$route->getName()] = NavigationItem::fromRouteOptions(
+                $route,
+                $route->getOptions(),
+                $this->router,
+            );
         }
 
         $topLevel = [];

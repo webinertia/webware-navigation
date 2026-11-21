@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace WebwareTest\Navigation;
 
 use Mezzio\Router\RouteCollectorInterface;
+use Mezzio\Router\RouterInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Test;
@@ -49,6 +50,7 @@ final class NavigationFactoryTest extends TestCase
 
         static::assertInstanceOf(Navigation::class, $helper);
         static::assertNull(new ReflectionProperty(Navigation::class, 'acl')->getValue($helper));
+        static::assertNull(new ReflectionProperty(Navigation::class, 'router')->getValue($helper));
     }
 
     /**
@@ -59,17 +61,24 @@ final class NavigationFactoryTest extends TestCase
     {
         $routeCollector = $this->createStub(RouteCollectorInterface::class);
         $acl            = $this->createStub(AclInterface::class);
+        $router         = $this->createStub(RouterInterface::class);
 
         $container = $this->createStub(ContainerInterface::class);
         $container->method('has')->willReturn(true);
         $container
             ->method('get')
             ->willReturnCallback(
-                static fn(string $id): RouteCollectorInterface|AclInterface => AclInterface::class === $id
-                    ? $acl
-                    : $routeCollector,
+                static fn(string $id): RouteCollectorInterface|AclInterface|RouterInterface => match ($id) {
+                    AclInterface::class    => $acl,
+                    RouterInterface::class => $router,
+                    default                => $routeCollector,
+                },
             );
 
-        static::assertInstanceOf(Navigation::class, new NavigationFactory()($container));
+        $helper = new NavigationFactory()($container);
+
+        static::assertInstanceOf(Navigation::class, $helper);
+        static::assertSame($acl, new ReflectionProperty(Navigation::class, 'acl')->getValue($helper));
+        static::assertSame($router, new ReflectionProperty(Navigation::class, 'router')->getValue($helper));
     }
 }

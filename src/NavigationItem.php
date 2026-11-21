@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Webware\Navigation;
 
+use Mezzio\Router\Exception\RuntimeException as RouterException;
 use Mezzio\Router\Route;
+use Mezzio\Router\RouterInterface;
 
 use function array_key_exists;
+use function is_array;
 use function is_string;
 
 /**
@@ -23,6 +26,7 @@ use function is_string;
  *   parent      string|null - route name of the parent item; null = top-level
  *   order       int - sort order within its level (default 0)
  *   fragment    string - anchor to append to the route path, for a link to a section
+ *   params      array - values for the route's own parameters, used when a router is present
  */
 final class NavigationItem
 {
@@ -39,6 +43,22 @@ final class NavigationItem
      */
     public ?string $fragment = null;
 
+    /**
+     * The router the path is generated through, when the item was built with one.
+     *
+     * Assigned by `fromRouteOptions()` for the same reason as the fragment. Without a
+     * router the item links to its route's own path, which is only a usable address when
+     * that path has no parameters.
+     */
+    public ?RouterInterface $router = null;
+
+    /**
+     * Values for the route's own parameters, from the `params` route option.
+     *
+     * @var array<string, mixed>
+     */
+    public array $params = [];
+
     public function __construct(
         public readonly Route $route,
         public readonly string $label,
@@ -50,7 +70,7 @@ final class NavigationItem
     /**
      * @param array<array-key, mixed> $options Route::getOptions() result
      */
-    public static function fromRouteOptions(Route $route, array $options): self
+    public static function fromRouteOptions(Route $route, array $options, ?RouterInterface $router = null): self
     {
         $item = new self(
             route : $route,
@@ -68,6 +88,15 @@ final class NavigationItem
         // An empty fragment would render `href="/path#"`, which names no anchor and is not
         // the same link as `/path`, so it is treated as absent.
         $item->fragment = is_string($fragment) && '' !== $fragment ? $fragment : null;
+        $item->router   = $router;
+
+        /** @var mixed $params Deliberately untyped: the check below decides what it is */
+        $params = $options['params'] ?? null;
+
+        if (is_array($params)) {
+            /** @var array<string, mixed> $params */
+            $item->params = $params;
+        }
 
         return $item;
     }
@@ -91,13 +120,19 @@ final class NavigationItem
      * would register a route nothing can match and would pollute the container
      * that active-route detection reads.
      *
+     * The path comes from the router when the item has one, so a route with parameters
+     * links to its generated address and not to its raw pattern. Without a router it is
+     * the route's own path.
+     *
      * The fragment is used as given. Translating a heading into a slug belongs to
      * whoever writes the option, because the rule for that lives in the renderer
      * that produced the heading, not here.
+     *
+     * @throws RouterException When the router cannot generate the route's address
      */
     public function getHref(): string
     {
-        $path = $this->route->getPath();
+        $path = $this->path();
 
         if (null === $this->fragment) {
             return $path;
@@ -109,5 +144,15 @@ final class NavigationItem
     public function hasChildren(): bool
     {
         return [] !== $this->children;
+    }
+
+    /** @throws RouterException When the router cannot generate the route's address */
+    private function path(): string
+    {
+        if (null === $this->router) {
+            return $this->route->getPath();
+        }
+
+        return $this->router->generateUri($this->route->getName(), $this->params);
     }
 }

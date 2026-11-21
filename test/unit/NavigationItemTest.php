@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace WebwareTest\Navigation;
 
 use Mezzio\Router\Route;
+use Mezzio\Router\RouterInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Test;
@@ -30,6 +31,17 @@ use Webware\Navigation\NavigationItem;
 #[CoversMethod(NavigationItem::class, 'hasChildren')]
 final class NavigationItemTest extends TestCase
 {
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function aParamsOptionThatIsNotAnArrayIsIgnored(): void
+    {
+        $item = NavigationItem::fromRouteOptions($this->makeRoute('docs.page', []), ['params' => 'v2']);
+
+        $this->assertSame([], $item->params);
+    }
+
     /**
      * @throws \PHPUnit\Exception
      */
@@ -92,6 +104,28 @@ final class NavigationItemTest extends TestCase
         $this->assertSame('/path#the-index-rule', $section->getHref());
         // No trailing separator when there is no fragment.
         $this->assertSame('/path', $plain->getHref());
+    }
+
+    /**
+     * @throws \PHPUnit\Exception
+     */
+    #[Test]
+    public function hrefIsGeneratedByTheRouterWithTheParamsOption(): void
+    {
+        $router = $this->createMock(RouterInterface::class);
+        $router
+            ->expects($this->once())
+            ->method('generateUri')
+            ->with('docs.page', ['version' => 'v2', 'path' => 'guide/'])
+            ->willReturn('/message-bus/v2/guide/');
+
+        $item = NavigationItem::fromRouteOptions(
+            $this->makeRoute('docs.page', []),
+            ['params' => ['version' => 'v2', 'path' => 'guide/'], 'fragment' => 'top'],
+            $router,
+        );
+
+        $this->assertSame('/message-bus/v2/guide/#top', $item->getHref());
     }
 
     /**

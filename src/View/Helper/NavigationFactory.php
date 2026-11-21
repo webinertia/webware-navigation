@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Webware\Navigation\View\Helper;
 
 use Mezzio\Router\RouteCollectorInterface;
+use Mezzio\Router\RouterInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -18,7 +19,7 @@ final class NavigationFactory
      */
     public function __invoke(ContainerInterface $container): Navigation
     {
-        return new Navigation(
+        $helper = new Navigation(
             routeCollector: $container->get(RouteCollectorInterface::class),
             acl           : $container->has(AclInterface::class) ? $container->get(AclInterface::class) : null,
             // Future: resolve from RendererPluginManager
@@ -26,5 +27,11 @@ final class NavigationFactory
             // breadcrumbRenderer: ...
             // sitemapRenderer:  ...
         );
+
+        if ($container->has(RouterInterface::class)) {
+            $helper->setRouter($container->get(RouterInterface::class));
+        }
+
+        return $helper;
     }
 }

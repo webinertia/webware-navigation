@@ -27,6 +27,7 @@ $app->get('/admin', AdminHandler::class, 'admin.dashboard')
 ```
 
 **Why this is correct:**
+
 - Route definition and nav metadata are co-located - one change, one place.
 - `RouteCollectorInterface::getRoutes()` returns all registered `Route` objects, so
   any service with `RouteCollectorInterface` can walk the full route list and extract
@@ -36,6 +37,7 @@ $app->get('/admin', AdminHandler::class, 'admin.dashboard')
   They are always current and never stale.
 
 **Rejected alternatives:**
+
 - Separate `navigation.config.php` - duplicates route definitions, desynchronises easily.
 - Database-driven navigation - adds a DB round-trip to every page render with no benefit
   since the route list is static code.
@@ -47,7 +49,7 @@ $app->get('/admin', AdminHandler::class, 'admin.dashboard')
 All filtering (nav ID membership + ACL) is concentrated in `NavigationFilterIterator`,
 a `FilterIterator` subclass wrapping `ArrayIterator<Route>`.
 
-```
+```text
 RouteCollectorInterface::getRoutes()  →  list<Route>
                                               ↓
                                NavigationFilterIterator
@@ -57,6 +59,7 @@ RouteCollectorInterface::getRoutes()  →  list<Route>
 ```
 
 **Why FilterIterator over a foreach loop inside the helper:**
+
 - Separates the *what-to-include* policy from the *what-to-do-with-it* logic.
 - `NavigationFilterIterator` can be independently unit-tested by constructing it with
   a stub `AclInterface` - no view renderer, no helper wiring needed.
@@ -64,6 +67,7 @@ RouteCollectorInterface::getRoutes()  →  list<Route>
   return container.
 
 **Why a subclass over `CallbackFilterIterator` with a closure:**
+
 - The subclass makes the dependency on `AclInterface` explicit and injectable.
 - `accept()` is a named method, easier to read in stack traces and test doubles.
 
@@ -137,7 +141,7 @@ make the API harder to use - callers cannot call `->menu()` on a generator.
 Each render method (`menu`, `breadcrumbs`, `sitemap`) checks for an optional
 `RendererInterface` before falling back to inline Bootstrap 5 markup.
 
-```
+```text
 NavigationContainer::menu()
     → if $menuRenderer !== null: $menuRenderer->render($this, $options)
     → else: inline Bootstrap markup
@@ -148,6 +152,7 @@ The renderers are constructor parameters on `NavigationContainer`, injected by t
 `null` for all three, so the inline fallbacks run.
 
 **Why plan for renderers now rather than deferring entirely:**
+
 - The constructor signature is the public API surface. Adding renderer parameters
   later would be a breaking change.
 - The `null` default means zero cost until renderers exist.
@@ -187,7 +192,7 @@ route name for active-item detection.
 It is placed after `UrlHelperMiddleware` (which itself runs after `RouteMiddleware`) in
 the global pipeline:
 
-```
+```text
 RouteMiddleware           ← sets RouteResult on request
 ImplicitHeadMiddleware
 ImplicitOptionsMiddleware
@@ -238,7 +243,7 @@ Active detection is recursive. A parent item is considered active if any of its
 descendants match the current route name. This produces correct sidebar highlighting
 for nested navigation:
 
-```
+```text
 admin.users      ← active (because descendant is active)
   admin.users.edit  ← active (matched route)
 ```
@@ -251,7 +256,7 @@ root to the active item.
 
 ## Data flow summary
 
-```
+```text
 Request
   │
   ▼

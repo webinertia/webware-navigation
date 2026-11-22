@@ -91,7 +91,6 @@ Register the override in your `ConfigProvider`:
 
 ---
 
-
 ## Adding a new nav identifier
 
 No code changes required. Define any string value for `options['navigation']`. Multiple

@@ -69,7 +69,7 @@ cannot express safely. See [Architecture](docs/architecture.md), Decision 7.
 
 ## Namespace
 
-```
+```text
 Package:   webware/webware-navigation
 Namespace: Webware\Navigation\
 ```

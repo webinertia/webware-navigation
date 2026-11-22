@@ -22,7 +22,7 @@ the result without any separate navigation configuration file.
 
 ## Package layout
 
-```
+```text
 src/
 ├── ConfigProvider.php
 ├── NavigationItem.php
